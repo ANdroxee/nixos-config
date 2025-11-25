@@ -30,6 +30,8 @@
   };
 
   services.xserver.enable = true;
+  services.libinput.enable = true;
+
   services.xserver.displayManager.gdm.enable = false;
   services.xserver.desktopManager.gnome.enable = false;
   
@@ -38,7 +40,7 @@
 
 
   services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.lightdm.background = ./wallpaper/wallpaper.png;
+  services.xserver.displayManager.lightdm.background = pkgs.copyPathToStore ./wallpaper/wallpaper.jpg;
   services.xserver.displayManager.lightdm.greeters.gtk = {
     theme.name = "Adwaita-dark";
     indicators = [];
