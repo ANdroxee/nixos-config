@@ -45,4 +45,10 @@
   
   hyprland.isDualMonitor = true;
   waybar.isLaptop = true;
+
+  wayland.windowManager.hyprland = {
+  enable = true;
+  package = null;  # Utilise le package système
+  portalPackage = null;  # Utilise le portal système
+};
 }
