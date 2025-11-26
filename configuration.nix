@@ -69,7 +69,6 @@ programs.hyprland = {
   xwayland.enable = true;
 };
 
-services.libinput.enable = true;
 security.polkit.enable = true;
 services.dbus.enable = true;
 
@@ -111,12 +110,6 @@ environment.sessionVariables = {
       };
     };
  };
-
-
-
-   environment.sessionVariables = {
-    TERMINAL = "kitty";
-   };
 
 
  programs.zsh.enable = true;
