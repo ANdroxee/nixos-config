@@ -1,17 +1,26 @@
 { config, pkgs, ... }:
+
 {
   imports = [
     ./hardware-configuration.nix
   ];
-  
+
+  ########################################
+  ## BOOT
+  ########################################
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  
+
+  ########################################
+  ## SYSTEM
+  ########################################
+
   networking.hostName = "androxe";
   networking.networkmanager.enable = true;
-  
+
   time.timeZone = "Europe/Paris";
-  
+
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "fr_FR.UTF-8";
@@ -24,82 +33,98 @@
     LC_TELEPHONE = "fr_FR.UTF-8";
     LC_TIME = "fr_FR.UTF-8";
   };
-  
-  services.xserver.enable = true;
-  services.libinput.enable = true;
-  services.xserver.displayManager.gdm.enable = false;
-  services.xserver.desktopManager.gnome.enable = false;
-  
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.lightdm.background = pkgs.copyPathToStore ./wallpaper/wallpaper.jpg;
-  services.xserver.displayManager.lightdm.greeters.gtk = {
-    theme.name = "Adwaita-dark";
-    indicators = [];
-    extraConfig = ''
-      show-clock = false
-      show-indicators = 
-      hide-user-image = true
-    '';
+
+  ########################################
+  ## DISPLAY MANAGER + WAYLAND
+  ########################################
+
+  # Désactiver complètement Xorg (Hyprland n’en a pas besoin)
+  services.xserver.enable = false;
+
+  # SDDM (le DM recommandé pour Hyprland)
+  services.displayManager.sddm.enable = true;
+  services.displayManager.defaultSession = "hyprland";
+
+  ########################################
+  ## HYPRLAND
+  ########################################
+
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    # Si tu as une Nvidia, ça corrige les problèmes
+    nvidiaPatches = true;
   };
-  
+
+  # Portals
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.common.default = "*";
+  };
+
+  ########################################
+  ## INPUTS (FIX CLAVIER + SOURIS)
+  ########################################
+
+  # seatd = essentiel pour Hyprland (fix HID)
+  services.seatd.enable = true;
+
+  # Éviter les bugs de curseur (surtout Nvidia)
+  environment.sessionVariables = {
+    TERMINAL = "kitty";
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
+
+  ########################################
+  ## AUDIO
+  ########################################
+
   services.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  security.polkit.enable = true;
-  services.dbus.enable = true;
-  
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  
-  users.users.androxe = {
-    isNormalUser = true;
-    description = "androxe";
-    shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" "input" "video" ];
-    packages = with pkgs; [];
-  };
-  
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-  
-  xdg.portal = {
-    enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    config.common.default = "*";
-  };
-  
-  services.greetd.enable = false;
-  
+
+  ########################################
+  ## ACCÈS / POLKIT / DBUS
+  ########################################
+
+  security.rtkit.enable = true;
+  security.polkit.enable = true;
+
+  services.dbus.enable = true;
+
+  # Agent polkit GNOME (nécessaire sous Wayland)
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";
     wantedBy = [ "graphical-session.target" ];
-    wants = [ "graphical-session.target" ];
     after = [ "graphical-session.target" ];
     serviceConfig = {
       Type = "simple";
       ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
       Restart = "on-failure";
-      RestartSec = 1;
-      TimeoutStopSec = 10;
     };
   };
-  
-  environment.sessionVariables = {
-    TERMINAL = "kitty";
-    WLR_NO_HARDWARE_CURSORS = "1";
-    LIBSEAT_BACKEND = "logind";
+
+  ########################################
+  ## USER
+  ########################################
+
+  users.users.androxe = {
+    isNormalUser = true;
+    description = "androxe";
+    shell = pkgs.zsh;
+    extraGroups = [ "networkmanager" "wheel" "input" "video" ];
   };
-  
-  programs.firefox.enable = true;
-  programs.zsh.enable = true;
-  
-  nixpkgs.config.allowUnfree = true;
-  
+
+  ########################################
+  ## PACKAGES
+  ########################################
+
   environment.systemPackages = with pkgs; [
     vim 
     wget
@@ -116,7 +141,11 @@
     git
     polkit_gnome
   ];
-  
+
+  ########################################
+  ## BLUETOOTH
+  ########################################
+
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
@@ -126,12 +155,29 @@
       };
     };
   };
-  
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  
+
+  ########################################
+  ## NIX SETTINGS
+  ########################################
+
+  nixpkgs.config.allowUnfree = true;
+
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
+  ########################################
+  ## FONTS
+  ########################################
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
   ];
-  
-  system.stateVersion = "25.05"; 
+
+  ########################################
+  ## SYSTEM STATE VERSION
+  ########################################
+
+  system.stateVersion = "25.05";
 }
