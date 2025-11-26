@@ -32,6 +32,7 @@
     pkgs.zsh-powerlevel10k
     pkgs.gh-copilot
     pkgs.gh
+    pkgs.rofi-wayland
   ];
   
   home.file = {};
