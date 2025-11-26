@@ -10,8 +10,7 @@ $mainMod = SUPER # Sets "Windows" key as main modifier
 # Example binds, see https://wiki.hyprland.org/Configuring/Binds/ for more
 bind = $mainMod, Q, exec, $terminal
 bind = $mainMod, C, killactive,
-bind = $mainMod, M, exit,
-bind = $mainMod, E, exec, $fileManager
+bind = $mainMod, M, exit, bind = $mainMod, E, exec, $fileManager
 bind = $mainMod, V, togglefloating,
 bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle

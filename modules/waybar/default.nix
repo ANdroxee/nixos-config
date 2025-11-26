@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
 {
-  # Déclarer l'option personnalisée
   options.waybar = {
     isLaptop = lib.mkOption {
       type = lib.types.bool;
@@ -10,7 +9,6 @@
     };
   };
 
-  # Configuration
   config = {
     programs.waybar = {
       enable = true;
@@ -72,7 +70,7 @@
           };
 
           clock = {
-            timezone = "Asia/Kolkata";
+            timezone = "Europe/Paris";
             tooltip = false;
             format = "{:%H:%M:%S  -  %A, %d}";
             interval = 1;
