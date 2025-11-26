@@ -1,253 +1,270 @@
 { config, lib, pkgs, ... }:
-{
-  options.waybar = {
-    isLaptop = lib.mkOption {
-      type = lib.types.bool;
-      default = false;
-      description = "Whether the system is a laptop.";
-    };
-  };
 
-  config = {
-    home.packages = with pkgs; [
-      wlogout
-      pavucontrol
+{
+  programs.waybar = {
+    enable = true;
+
+    settings = [
+      {
+        layer = "top";
+        position = "top";
+        spacing = 0;
+        margin-bottom = -10;
+
+        modules-left = [
+          "hyprland/workspaces"
+          "custom/uptime"
+          "cpu"
+        ];
+
+        modules-center = [ "clock" ];
+
+        modules-right = [
+          "custom/pomodoro"
+          "bluetooth"
+          "network"
+          "pulseaudio"
+          "backlight"
+          "battery"
+        ];
+
+        "hyprland/workspaces" = {
+          format = "{name}: {icon}";
+          format-icons = {
+            active = "";
+            default = "";
+          };
+        };
+
+        bluetooth = {
+          format = "󰂲";
+          format-on = "{icon}";
+          format-off = "{icon}";
+          format-connected = "{icon}";
+          format-icons = {
+            on = "󰂯";
+            off = "󰂲";
+            connected = "󰂱";
+          };
+          on-click = "blueman-manager";
+          tooltip-format-connected = "{device_enumerate}";
+        };
+
+        "custom/music" = {
+          format = "  {}";
+          escape = true;
+          interval = 5;
+          tooltip = false;
+          exec = "playerctl metadata --format='{{ artist }} - {{ title }}'";
+          on-click = "playerctl play-pause";
+          max-length = 50;
+        };
+
+        clock = {
+          timezone = "Asia/Kolkata";
+          tooltip = false;
+          format = "{:%H:%M:%S  -  %A, %d}";
+          interval = 1;
+        };
+
+        network = {
+          format-wifi = "󰤢";
+          format-ethernet = "󰈀 ";
+          format-disconnected = "󰤠 ";
+          interval = 5;
+          tooltip-format = "{essid} ({signalStrength}%)";
+          on-click = "nm-connection-editor";
+        };
+
+        cpu = {
+          interval = 1;
+          format = "  {icon0}{icon1}{icon2}{icon3} {usage:>2}%";
+          format-icons = [ "▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
+          on-click = "ghostty -e htop";
+        };
+
+        memory = {
+          interval = 30;
+          format = "  {used:0.1f}G/{total:0.1f}G";
+          tooltip-format = "Memory";
+        };
+
+        "custom/uptime" = {
+          format = "{}";
+          format-icon = [ "" ];
+          tooltip = false;
+          interval = 1600;
+          exec = "$HOME/.config/waybar/scripts/uptime.sh";
+        };
+
+        backlight = {
+          format = "{icon}  {percent}%";
+          format-icons = [
+            "" "󰃜" "󰃛" "󰃞" "󰃝" "󰃟" "󰃠"
+          ];
+          tooltip = false;
+        };
+
+        pulseaudio = {
+          format = "{icon}  {volume}%";
+          format-muted = "";
+          format-icons = {
+            default = [ "" "" " " ];
+          };
+          on-click = "pavucontrol";
+        };
+
+        battery = {
+          interval = 2;
+          states = {
+            warning = 30;
+            critical = 15;
+          };
+          format = "{icon}  {capacity}%";
+          format-full = "{icon}  {capacity}%";
+          format-charging = " {capacity}%";
+          format-plugged = " {capacity}%";
+          format-alt = "{icon} {time}";
+          format-icons = [ "" "" "" "" "" ];
+        };
+
+        "custom/lock" = {
+          tooltip = false;
+          on-click = "sh -c '(sleep 0s; hyprlock)' & disown";
+          format = "";
+        };
+
+        "custom/pomodoro" = {
+          format = "{}";
+          return-type = "json";
+          exec = "waybar-module-pomodoro --no-work-icons";
+          on-click = "waybar-module-pomodoro toggle";
+          on-click-right = "waybar-module-pomodoro reset";
+        };
+      }
     ];
 
-    programs.waybar = {
-      enable = true;
-      systemd = {
-        enable = false;
-        target = "graphical-session.target";
-      };
-      settings = [
-        {
-          layer = "bottom";
-          position = "top";
-          height = 40;
-          spacing = 2;
-          exclusive = true;
-          "gtk-layer-shell" = true;
-          passthrough = false;
-          "fixed-center" = true;
+    style = ''
+      /* --- Global Styles --- */
+      * {
+        font-family: 'SF Pro Text', 'Inter', 'Segoe UI, NotoSans Nerd Font', sans-serif;
+        font-size: 13px;
+        min-height: 0;
+      }
 
-          modules-left = [ "custom/logo" "hyprland/window" ];
-          modules-center = [ "hyprland/workspaces" ];
-          modules-right = [
-            "cpu"
-            "memory"
-            "pulseaudio"
-            "clock"
-            "clock#simpleclock"
-            "tray"
-            "custom/power"
-          ] ++ (if config.waybar.isLaptop then [ "custom/battery" ] else []);
+      #waybar {
+        background: transparent;
+        color: #c6d0f5;
+        margin: 0px;
+        font-weight: 500;
+      }
 
-          "hyprland/workspaces" = {
-            "on-click" = "activate";
-            format = "{id}";
-            "all-outputs" = true;
-            "disable-scroll" = false;
-            "active-only" = false;
-            "sort-by-number" = true;
-          };
+      /* --- Left Modules --- */
+      #workspaces,
+      #custom-uptime,
+      #cpu {
+        background-color: #1a1b26;
+        padding: 0.3rem 0.7rem;
+        margin: 5px 0px;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+      }
 
-          "hyprland/window" = {
-            format = "{title}";
-          };
+      #workspaces { padding: 2px; margin-left: 7px; margin-right: 5px; }
+      #custom-uptime { margin-right: 5px; }
 
-          tray = {
-            "show-passive-items" = true;
-            spacing = 10;
-          };
+      #custom-uptime:hover,
+      #cpu:hover { background-color: rgb(41, 42, 53); }
 
-          "clock#simpleclock" = {
-            tooltip = false;
-            format = " {:%H:%M}";
-          };
+      #workspaces button {
+        color: #babbf1;
+        border-radius: 5px;
+        padding: 0.3rem 0.6rem;
+        background: transparent;
+        transition: all .2s;
+      }
 
-          clock = {
-            format = "{:L%a %d %b}";
-            calendar = {
-              format = {
-                days = "<span weight='normal'>{}</span>";
-                months = "<span color='#cdd6f4'><b>{}</b></span>";
-                today = "<span color='#f38ba8' weight='700'><u>{}</u></span>";
-                weekdays = "<span color='#f9e2af'><b>{}</b></span>";
-                weeks = "<span color='#a6e3a1'><b>W{}</b></span>";
-              };
-              mode = "month";
-              "mode-mon-col" = 1;
-              "on-scroll" = 1;
-            };
-            "tooltip-format" = "<span color='#cdd6f4' font='Lexend 16'><tt><small>{calendar}</small></tt></span>";
-          };
+      #workspaces button.active {
+        color: #99d1db;
+        background-color: rgba(153, 209, 219, 0.1);
+      }
 
-          cpu = {
-            format = " {usage}%";
-            tooltip = true;
-            interval = 1;
-          };
+      #workspaces button:hover {
+        background: rgb(41,42,53);
+        color: #c6d0f5;
+      }
 
-          memory = {
-            format = " {used:0.1f}Gi";
-          };
+      /* --- Center --- */
+      #clock {
+        background-color: #1a1b26;
+        padding: 0.3rem 0.7rem;
+        margin: 5px 0px;
+        border-radius: 6px;
+        box-shadow: 0 1px 3px rgba(153,209,219,0.2);
+      }
 
-          pulseaudio = {
-            format = "{icon} {volume}%";
-            "format-muted" = "  muted";
-            "format-icons" = {
-              headphone = "";
-              default = [ " " " " " " ];
-            };
-            "on-click" = "pavucontrol";
-          };
+      #clock:hover { background-color: rgba(153,209,219,0.1); }
 
-          "custom/sep" = {
-            format = "|";
-            tooltip = false;
-          };
+      /* Pomodoro */
+      #custom-pomodoro {
+        background-color: #1a1b26;
+        padding: 0.3rem 0.7rem;
+        margin: 5px 0px;
+        border-radius: 6px;
+        transition: .2s;
+        color: #babbf1;
+      }
 
-          "custom/power" = {
-            tooltip = false;
-            "on-click" = "wlogout -p layer-shell &";
-            format = "⏻";
-          };
+      #custom-pomodoro:hover {
+        background-color: rgb(41,42,53);
+        color: #c6d0f5;
+        outline: 1px solid rgba(255,255,255,0.1);
+        outline-offset: -1px;
+      }
 
-          "custom/logo" = {
-            format = "❄️";
-            tooltip = false;
-          };
+      #custom-pomodoro.work,
+      #custom-pomodoro.break {
+        color: #99d1db;
+        background-color: rgba(153,209,219,0.1);
+      }
 
-          "custom/battery" = {
-            exec = "bash -c 'capacity=$(cat /sys/class/power_supply/BAT*/capacity 2>/dev/null || echo 100); capacity=\${capacity:-100}; bars=\$((capacity / 10)); empty=\$((10 - bars)); filled=\"\"; empty_bars=\"\"; for i in \$(seq 1 \$bars); do filled=\"\$filled█\"; done; for i in \$(seq 1 \$empty); do empty_bars=\"\$empty_bars░\"; done; echo \"\$filled\$empty_bars \${capacity}%\"'";
-            interval = 30;
-            tooltip = false;
-          };
-        }
-      ];
-      style = ''
-        * {
-          min-height: 0;
-          min-width: 0;
-          font-family: Lexend, "JetBrainsMono NFP";
-          font-size: 16px;
-          font-weight: 600;
-        }
+      /* --- Right Modules --- */
+      #bluetooth,
+      #pulseaudio,
+      #backlight,
+      #network,
+      #custom-lock,
+      #battery {
+        background-color: #1a1b26;
+        padding: 0.3rem 0.7rem;
+        margin: 5px 0px;
+      }
 
-        window#waybar {
-          transition-property: background-color;
-          transition-duration: 0.5s;
-          /* background-color: #1e1e2e; */
-          /* background-color: #181825; */
-          /* background-color: #11111b; */
-          background-color: rgba(24, 24, 37, 0);
-        }
+      #bluetooth {
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        color: #888;
+      }
+      #battery {
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+        margin-right: 7px;
+      }
 
-        #workspaces button {
-          padding: 0.3rem 0.6rem;
-          margin: 0.4rem 0.25rem;
-          border-radius: 6px;
-          /* background-color: #181825; */
-          background-color: #1e1e2e;
-          color: #cdd6f4;
-        }
+      /* Colors */
+      #battery { color:#99d1db; }
+      #battery.charging { color:#a6d189; }
+      #battery.warning:not(.charging) { color:#e78284; }
+      #bluetooth.connected { color:#99d1db; }
 
-        #workspaces button:hover {
-          color: #1e1e2e;
-          background-color: #cdd6f4;
-        }
-
-        #workspaces button.active {
-          background-color: #1e1e2e;
-          color: #89b4fa;
-        }
-
-        #workspaces button.urgent {
-          background-color: #1e1e2e;
-          color: #f38ba8;
-        }
-
-        #clock,
-        #pulseaudio,
-        #custom-logo,
-        #custom-power,
-        #cpu,
-        #tray,
-        #memory,
-        #window,
-        #custom-battery {
-          padding: 0.3rem 0.6rem;
-          margin: 0.4rem 0.25rem;
-          border-radius: 6px;
-          /* background-color: #181825; */
-          background-color: #1e1e2e;
-        }
-
-    /* mpris styles removed with mpris module */
-
-        #custom-sep {
-          padding: 0px;
-          color: #585b70;
-        }
-
-        window#waybar.empty #window {
-          background-color: transparent;
-        }
-
-        #cpu {
-          color: #ffffff;
-        }
-
-        #memory {
-          color: #77b2e1;
-        }
-
-        #clock {
-          color: #74c7ec;
-        }
-
-        #clock.simpleclock {
-          color: #89b4fa;
-        }
-
-        #window {
-          color: #cdd6f4;
-        }
-
-        #pulseaudio {
-          color: #7cb2e4;
-        }
-
-        #pulseaudio.muted {
-          color: #a6adc8;
-        }
-
-        #custom-battery {
-          color: #a6e3a1;
-        }
-
-        #custom-battery.charging {
-          color: #f9e2af;
-        }
-
-        #custom-battery.warning:not(.charging) {
-          color: #f38ba8;
-        }
-
-        #custom-logo {
-          color: #ffffff;
-        }
-
-        #custom-power {
-          color: #f38ba8;
-        }
-
-        tooltip {
-          background-color: #181825;
-          border: 2px solid #89b4fa;
-        }
-      '';
-    };
+      tooltip {
+        background-color: #1a1b26;
+        color: #dddddd;
+        padding: 5px 12px;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 6px;
+      }
+    '';
   };
 }
