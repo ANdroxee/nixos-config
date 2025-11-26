@@ -38,11 +38,13 @@
   ## DISPLAY MANAGER + WAYLAND
   ########################################
 
-  # Désactiver complètement Xorg (Hyprland n’en a pas besoin)
   services.xserver.enable = false;
 
-  # SDDM (le DM recommandé pour Hyprland)
-  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
+
   services.displayManager.defaultSession = "hyprland";
 
   ########################################
@@ -52,11 +54,8 @@
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
-    # Si tu as une Nvidia, ça corrige les problèmes
-    nvidiaPatches = true;
   };
 
-  # Portals
   xdg.portal = {
     enable = true;
     extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
@@ -64,13 +63,11 @@
   };
 
   ########################################
-  ## INPUTS (FIX CLAVIER + SOURIS)
+  ## INPUT
   ########################################
 
-  # seatd = essentiel pour Hyprland (fix HID)
   services.seatd.enable = true;
 
-  # Éviter les bugs de curseur (surtout Nvidia)
   environment.sessionVariables = {
     TERMINAL = "kitty";
     WLR_NO_HARDWARE_CURSORS = "1";
@@ -90,7 +87,7 @@
   };
 
   ########################################
-  ## ACCÈS / POLKIT / DBUS
+  ## POLKIT + DBUS
   ########################################
 
   security.rtkit.enable = true;
@@ -98,7 +95,6 @@
 
   services.dbus.enable = true;
 
-  # Agent polkit GNOME (nécessaire sous Wayland)
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
     description = "polkit-gnome-authentication-agent-1";
     wantedBy = [ "graphical-session.target" ];
@@ -120,6 +116,8 @@
     shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" "input" "video" ];
   };
+
+  programs.zsh.enable = true;
 
   ########################################
   ## PACKAGES
