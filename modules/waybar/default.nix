@@ -94,7 +94,7 @@
           format-icon = [ "" ];
           tooltip = false;
           interval = 1600;
-          exec = "$HOME/.config/waybar/scripts/uptime.sh";
+          exec = "$/etc/nixos/modules/waybar/scripts/uptime.sh";
         };
 
         backlight = {
