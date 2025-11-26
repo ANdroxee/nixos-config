@@ -4,7 +4,7 @@ if config.hyprland.isDualMonitor then ''
 ### MONITORS ###
 ################
 # See https://wiki.hyprland.org/Configuring/Monitors/
-monitor=,preferred,auto,auto
+monitor=,preferred,auto,1
 ###################
 ### MY PROGRAMS ###
 ###################

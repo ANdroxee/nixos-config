@@ -44,4 +44,5 @@
   ];
   
   hyprland.isDualMonitor = true;
+  waybar.isLaptop = true;
 }
