@@ -138,7 +138,11 @@
     code-cursor
     git
     polkit_gnome
+    firefox
   ];
+
+
+  programs.firefox.enable = true;
 
   ########################################
   ## BLUETOOTH
