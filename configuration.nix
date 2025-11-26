@@ -34,9 +34,6 @@
 
   services.xserver.displayManager.gdm.enable = false;
   services.xserver.desktopManager.gnome.enable = false;
-  
-  #service.displayManager.defaultSession = "hyprlan";
-  programs.hyprland.enable = true;
 
 
   services.xserver.displayManager.lightdm.enable = true;
@@ -60,12 +57,27 @@
   };
 
   users.users.androxe = {
-    isNormalUser = true;
-    description = "androxe";
-    shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
-  };
+  isNormalUser = true;
+  description = "androxe";
+  shell = pkgs.zsh;
+  extraGroups = [ "networkmanager" "wheel" "input" "video" ];
+  packages = with pkgs; [];
+};
+
+programs.hyprland = {
+  enable = true;
+  xwayland.enable = true;
+};
+
+services.libinput.enable = true;
+security.polkit.enable = true;
+services.dbus.enable = true;
+
+environment.sessionVariables = {
+  TERMINAL = "kitty";
+  WLR_NO_HARDWARE_CURSORS = "1";
+  LIBSEAT_BACKEND = "logind";
+};
 
 
   programs.firefox.enable = true;
