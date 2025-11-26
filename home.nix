@@ -41,6 +41,7 @@
   imports = [
     ./modules/waybar/default.nix
     ./modules/hypr/default.nix
+    ./modules/rofi/rofi.nix
   ];
   
   hyprland.isDualMonitor = true;
