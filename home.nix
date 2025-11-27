@@ -4,9 +4,6 @@
   home.homeDirectory = "/home/androxe";
   home.stateVersion = "25.05";
   
-  # Retirer nixpkgs.config si vous utilisez useGlobalPkgs
-  # nixpkgs.config.allowUnfree = true;
-  
   gtk.enable = true;
   gtk.gtk3.theme = {
     name = "Adwaita-dark";
@@ -26,6 +23,20 @@
     TERMINAL = "kitty";
   };
   
+  # Ranger configuration
+  programs.ranger = {
+    enable = true;
+    settings = {
+      preview_images = true;
+      preview_images_method = "kitty";
+      show_hidden = true;
+      confirm_on_delete = "multiple";
+    };
+  };
+  
+  # Activer fontconfig pour les Nerd Fonts
+  fonts.fontconfig.enable = true;
+  
   home.packages = [
     pkgs.hello
     pkgs.hyprland
@@ -38,6 +49,8 @@
     pkgs.gh-copilot
     pkgs.gh
     pkgs.rofi
+    pkgs.psmisc  # Contient killall
+    # Ranger et dépendances
     pkgs.ranger
     pkgs.file
     pkgs.imagemagick
@@ -60,7 +73,7 @@
     ./modules/hyprlock/default.nix
     ./modules/hyprpaper/default.nix
     ./modules/zsh/default.nix
-    #./modules/ranger/default.nix
+    # ./modules/ranger/default.nix  # Retirez cette ligne
   ];
   
   hyprland.isDualMonitor = true;
@@ -71,7 +84,6 @@
     package = null;
     portalPackage = null;
     settings = {
-      # Ajoutez au moins une configuration basique
       "$mod" = "SUPER";
     };
   };

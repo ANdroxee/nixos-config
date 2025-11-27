@@ -21,9 +21,11 @@
           margin-bottom = -10;
 
           modules-left = [
+            "custom/power"
             "hyprland/workspaces"
             "custom/uptime"
             "cpu"
+            "memory"
           ];
 
           modules-center = [ "clock" ];
@@ -37,6 +39,12 @@
             "battery"
           ];
 
+          "custom/power" = {
+            format = "⏻";
+            tooltip = false;
+            on-click = "wlogout -p layer-shell";
+          };
+
           "hyprland/workspaces" = {
             format = "{name}: {icon}";
             format-icons = {
@@ -46,17 +54,21 @@
           };
 
           bluetooth = {
-            format = "󰂲";
-            format-on = "{icon}";
-            format-off = "{icon}";
-            format-connected = "{icon}";
+            format = "󰂲  Bluetooth";
+            format-on = "{icon}  Bluetooth";
+            format-off = "{icon}  Désactivé";
+            format-connected = "{icon}  {device_alias}";
             format-icons = {
               on = "󰂯";
               off = "󰂲";
               connected = "󰂱";
             };
             on-click = "blueman-manager";
-            tooltip-format-connected = "{device_enumerate}";
+            tooltip = true;
+            tooltip-format = "{status}";
+            tooltip-format-connected = "Connecté à:\n{device_enumerate}";
+            tooltip-format-enumerate-connected = "  {device_alias}";
+            max-length = 25;
           };
 
           "custom/music" = {
@@ -77,25 +89,30 @@
           };
 
           network = {
-            format-wifi = "󰤢";
-            format-ethernet = "󰈀 ";
-            format-disconnected = "󰤠 ";
+            format-wifi = "󰤢  {essid}";
+            format-ethernet = "󰈀  Ethernet";
+            format-disconnected = "󰤠  Déconnecté";
             interval = 5;
-            tooltip-format = "{essid} ({signalStrength}%)";
+            tooltip = true;
+            tooltip-format = "Signal: {signalStrength}%\nIP: {ipaddr}\nFréquence: {frequency}MHz";
             on-click = "nm-connection-editor";
+            max-length = 25;
           };
 
           cpu = {
             interval = 1;
-            format = "  {icon0}{icon1}{icon2}{icon3} {usage:>2}%";
-            format-icons = [ "▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
-            on-click = "ghostty -e htop";
+            format = " {usage:>2}%";
+            tooltip = true;
+            tooltip-format = "CPU: {usage}%";
+            on-click = "kitty -e htop";
           };
 
           memory = {
-            interval = 30;
-            format = "  {used:0.1f}G/{total:0.1f}G";
-            tooltip-format = "Memory";
+            interval = 10;
+            format = " {used:0.1f}G";
+            tooltip = true;
+            tooltip-format = "RAM: {used:0.1f}G / {total:0.1f}G ({percentage}%)\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G";
+            on-click = "kitty -e htop";
           };
 
           "custom/uptime" = {
@@ -129,11 +146,11 @@
               warning = 30;
               critical = 15;
             };
-            format = "{icon}  {capacity}%";
-            format-full = "{icon}  {capacity}%";
+            format = " {capacity}%";
+            format-full = " {capacity}%";
             format-charging = " {capacity}%";
             format-plugged = " {capacity}%";
-            format-alt = "{icon} {time}";
+            format-alt = " {time}";
             format-icons = [ "" "" "" "" "" ];
           };
 
@@ -156,8 +173,8 @@
       style = ''
         /* --- Global Styles --- */
         * {
-          font-family: 'SF Pro Text', 'Inter', 'Segoe UI, NotoSans Nerd Font', sans-serif;
-          font-size: 13px;
+          font-family: 'JetBrainsMono Nerd Font', 'Symbols Nerd Font', monospace;
+          font-size: 14px;
           min-height: 0;
         }
 
@@ -168,10 +185,31 @@
           font-weight: 500;
         }
 
+        /* --- Power Button --- */
+        #custom-power {
+          background-color: #e78284;
+          color: #1a1b26;
+          padding: 0.3rem 0.8rem;
+          margin: 5px 0px;
+          margin-left: 7px;
+          margin-right: 5px;
+          border-radius: 6px;
+          font-size: 16px;
+          font-weight: bold;
+          box-shadow: 0 1px 3px rgba(231,130,132,0.3);
+          transition: all 0.2s ease-in-out;
+        }
+
+        #custom-power:hover {
+          background-color: #ea999c;
+          box-shadow: 0 2px 6px rgba(231,130,132,0.5);
+        }
+
         /* --- Left Modules --- */
         #workspaces,
         #custom-uptime,
-        #cpu {
+        #cpu,
+        #memory {
           background-color: #1a1b26;
           padding: 0.3rem 0.7rem;
           margin: 5px 0px;
@@ -180,11 +218,13 @@
           transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
         }
 
-        #workspaces { padding: 2px; margin-left: 7px; margin-right: 5px; }
+        #workspaces { padding: 2px; margin-right: 5px; }
         #custom-uptime { margin-right: 5px; }
+        #cpu { margin-right: 5px; }
 
         #custom-uptime:hover,
-        #cpu:hover { background-color: rgb(41, 42, 53); }
+        #cpu:hover,
+        #memory:hover { background-color: rgb(41, 42, 53); }
 
         #workspaces button {
           color: #babbf1;
@@ -273,6 +313,101 @@
           padding: 5px 12px;
           border: 1px solid rgba(255,255,255,0.1);
           border-radius: 6px;
+        }
+      '';
+    };
+
+    # Installer wlogout pour le menu power
+    home.packages = with pkgs; [
+      wlogout
+    ];
+
+    # Configuration de wlogout
+    programs.wlogout = {
+      enable = true;
+      layout = [
+        {
+          label = "lock";
+          action = "hyprlock";
+          text = "Verrouiller";
+          keybind = "l";
+        }
+        {
+          label = "logout";
+          action = "hyprctl dispatch exit";
+          text = "Déconnexion";
+          keybind = "e";
+        }
+        {
+          label = "shutdown";
+          action = "systemctl poweroff";
+          text = "Éteindre";
+          keybind = "s";
+        }
+        {
+          label = "suspend";
+          action = "systemctl suspend";
+          text = "Veille";
+          keybind = "u";
+        }
+        {
+          label = "reboot";
+          action = "systemctl reboot";
+          text = "Redémarrer";
+          keybind = "r";
+        }
+      ];
+      style = ''
+        * {
+          background-image: none;
+          box-shadow: none;
+        }
+
+        window {
+          background-color: rgba(26, 27, 38, 0.95);
+        }
+
+        button {
+          border-radius: 8px;
+          border: 2px solid #1a1b26;
+          background-color: #1a1b26;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: 25%;
+          color: #c6d0f5;
+          margin: 10px;
+          transition: all 0.2s ease-in-out;
+        }
+
+        button:hover {
+          background-color: rgba(153, 209, 219, 0.1);
+          border-color: #99d1db;
+          color: #99d1db;
+        }
+
+        button:focus {
+          background-color: #99d1db;
+          color: #1a1b26;
+        }
+
+        #lock {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"));
+        }
+
+        #logout {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"));
+        }
+
+        #suspend {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"));
+        }
+
+        #shutdown {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"));
+        }
+
+        #reboot {
+          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"));
         }
       '';
     };
