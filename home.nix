@@ -43,6 +43,7 @@
     ./modules/waybar/default.nix
     ./modules/hypr/default.nix
     ./modules/rofi/rofi.nix
+    ./modules/hyprlock/default.nix
   ];
   
   hyprland.isDualMonitor = true;
