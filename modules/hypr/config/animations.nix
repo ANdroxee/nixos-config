@@ -1,5 +1,5 @@
 ''
-    enabled = yes, please :)
+    enabled = yes,
 
     # Default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
 
