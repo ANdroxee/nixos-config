@@ -1,5 +1,13 @@
-preload = /etc/nixos/wallpaper/wallpaper.jpg
-wallpaper = ,/etc/nixos/wallpaper/wallpaper.jpg
+{ config, pkgs, ... }:
 
-ipc = off
-splash = false
+{
+  services.hyprpaper = {
+    enable = true;
+    settings = {
+      preload = [ "/etc/nixos/wallpaper/wallpaper.jpg" ];
+      wallpaper = [ ",/etc/nixos/wallpaper/wallpaper.jpg" ];
+      ipc = "off";
+      splash = false;
+    };
+  };
+}
