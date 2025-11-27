@@ -44,6 +44,7 @@
     ./modules/hypr/default.nix
     ./modules/rofi/rofi.nix
     ./modules/hyprlock/default.nix
+    ./modules/hyprpaper/default.nix
   ];
   
   hyprland.isDualMonitor = true;
