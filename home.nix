@@ -4,7 +4,8 @@
   home.homeDirectory = "/home/androxe";
   home.stateVersion = "25.05";
   
-  nixpkgs.config.allowUnfree = true;
+  # Retirer nixpkgs.config si vous utilisez useGlobalPkgs
+  # nixpkgs.config.allowUnfree = true;
   
   gtk.enable = true;
   gtk.gtk3.theme = {
@@ -13,8 +14,12 @@
   
   programs.git = {
     enable = true;
-    userName = "ANdroxee";
-    userEmail = "anto.dongay123@gmail.com";
+    settings = {
+      user = {
+        name = "ANdroxee";
+        email = "anto.dongay123@gmail.com";
+      };
+    };
   };
   
   home.sessionVariables = {
@@ -50,10 +55,14 @@
   
   hyprland.isDualMonitor = true;
   waybar.isLaptop = true;
-
+  
   wayland.windowManager.hyprland = {
-  enable = true;
-  package = null;
-  portalPackage = null;
-};
+    enable = true;
+    package = null;
+    portalPackage = null;
+    settings = {
+      # Ajoutez au moins une configuration basique
+      "$mod" = "SUPER";
+    };
+  };
 }

@@ -20,7 +20,8 @@
       path = "${config.home.homeDirectory}/.zsh_history";
     };
     
-    initExtra = ''
+    # Utiliser initContent au lieu de initExtra
+    initContent = ''
       # Powerlevel10k instant prompt
       if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
         source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
@@ -29,7 +30,7 @@
       # Powerlevel10k theme
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       
-      # Powerlevel10k config (vous pourrez le personnaliser avec p10k configure)
+      # Powerlevel10k config
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
       
       # Raccourcis clavier utiles
