@@ -13,8 +13,8 @@
       background = [
         {
           monitor = "";
-          path = "/etc/nixos/wallpaper/wallpaper.png";
-          blur_passes = 2;
+          path = "/etc/nixos/wallpaper/wallpaper.jpg";
+          blur_passes = 0.5;
         }
       ];
 
@@ -40,20 +40,7 @@
           valign = "center";
         }
       ];
-
-      image = [
-        {
-          monitor = "";
-          path = "/etc/nixos/wallpaper/Profile_image.png";
-          size = 280;
-          rounding = -1;
-          border_size = 4;
-          border_color = "rgb(255, 255, 255)";
-          position = "0, -50";
-          halign = "center";
-          valign = "center";
-        }
-      ];
+  
 
       input-field = [
         {
