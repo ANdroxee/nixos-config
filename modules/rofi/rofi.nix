@@ -8,7 +8,7 @@
       bg-col-light: #282828;
       border-col: #A89984;
       selected-col: #3C3836;
-      green: #98971A;
+      green:rgb(255, 0, 0);
       fg-col: #FBF1C7;
       fg-col2: #EBDBB2;
       grey: #BDAE93;
