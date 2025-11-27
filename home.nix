@@ -38,6 +38,15 @@
     pkgs.gh-copilot
     pkgs.gh
     pkgs.rofi
+    pkgs.ranger
+    pkgs.file
+    pkgs.imagemagick
+    pkgs.ffmpegthumbnailer
+    pkgs.poppler-utils
+    pkgs.highlight
+    pkgs.atool
+    pkgs.unzip
+    pkgs.p7zip
   ];
   
   home.file = {};
@@ -51,6 +60,7 @@
     ./modules/hyprlock/default.nix
     ./modules/hyprpaper/default.nix
     ./modules/zsh/default.nix
+    #./modules/ranger/default.nix
   ];
   
   hyprland.isDualMonitor = true;
