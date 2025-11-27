@@ -1,13 +1,14 @@
 ''
-    enabled = yes,
+animations {
+    enabled = true
 
     # Default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
 
-    bezier = easeOutQuint,0.23,1,0.32,1
-    bezier = easeInOutCubic,0.65,0.05,0.36,1
-    bezier = linear,0,0,1,1
-    bezier = almostLinear,0.5,0.5,0.75,1.0
-    bezier = quick,0.15,0,0.1,1
+    bezier = easeOutQuint, 0.23, 1, 0.32, 1
+    bezier = easeInOutCubic, 0.65, 0.05, 0.36, 1
+    bezier = linear, 0, 0, 1, 1
+    bezier = almostLinear, 0.5, 0.5, 0.75, 1.0
+    bezier = quick, 0.15, 0, 0.1, 1
 
     animation = global, 1, 10, default
     animation = border, 1, 5.39, easeOutQuint
@@ -29,7 +30,7 @@
 
 # Ref https://wiki.hyprland.org/Configuring/Workspace-Rules/
 # "Smart gaps" / "No gaps when only"
-# uncomment all if you wish to use that.
+# Uncomment all if you wish to use this feature.
 # workspace = w[tv1], gapsout:0, gapsin:0
 # workspace = f[1], gapsout:0, gapsin:0
 # windowrule = bordersize 0, floating:0, onworkspace:w[tv1]
