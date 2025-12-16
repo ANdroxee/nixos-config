@@ -60,6 +60,7 @@
     pkgs.atool
     pkgs.unzip
     pkgs.p7zip
+    pkgs.brightnessctl
   ];
   
   home.file = {};
