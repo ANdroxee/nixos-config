@@ -17,6 +17,8 @@ bind = $mainMod, V, togglefloating,
 bind = $mainMod, R, exec, rofi -show drun
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
+bindel = , XF86MonBrightnessUp, exec, brightnessctl set 5%+
+bindel = , XF86MonBrightnessDown, exec, brightnessctl set 5%-
 
 # Move focus with mainMod + arrow keys
 bind = $mainMod, left, movefocus, l
