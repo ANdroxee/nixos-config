@@ -82,6 +82,7 @@
     ./modules/kitty/default.nix
     ./modules/btop/default.nix
     ./modules/fastfetch/default.nix
+    ./modules/starship/default.nix
   ];
   
   hyprland.isDualMonitor = true;
