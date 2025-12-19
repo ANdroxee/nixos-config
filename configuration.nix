@@ -154,9 +154,12 @@
     settings = {
       General = {
         Enable = "Source,Sink,Media,Socket";
+        Experimental = true;
       };
     };
   };
+
+  services.blueman.enable = true;
 
   ########################################
   ## NIX SETTINGS
@@ -181,7 +184,7 @@
   ########################################
   ## Driver Nvidia
   ########################################
-  # Active les drivers graphiques
+
   services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.graphics = {

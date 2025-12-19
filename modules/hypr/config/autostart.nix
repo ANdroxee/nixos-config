@@ -47,8 +47,8 @@ env = HYPRCURSOR_SIZE,24
 
 # https://wiki.hyprland.org/Configuring/Variables/#general
 general {
-    gaps_in = 2
-    gaps_out = 5
+    gaps_in = 5
+    gaps_out = 10
 
     border_size = 1
 
