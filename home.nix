@@ -80,7 +80,7 @@
     ./modules/hyprlock/default.nix
     ./modules/hyprpaper/default.nix
     ./modules/zsh/default.nix
-    # ./modules/ranger/default.nix  # Retirez cette ligne
+    ./modules/kitty/default.nix
   ];
   
   hyprland.isDualMonitor = true;
