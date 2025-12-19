@@ -1,5 +1,7 @@
 { config, pkgs, ... }:
 
+
+
 {
   imports = [
     ./hardware-configuration.nix
@@ -43,6 +45,8 @@
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
+    theme = "stray";
+    package = pkgs.kdePackages.sddm; 
   };
 
   services.displayManager.defaultSession = "hyprland";
@@ -139,6 +143,15 @@
     git
     polkit_gnome
     firefox
+    sddm-stray
+  
+
+  (catppuccin-sddm.override {
+      flavor = "mocha";
+      font  = "JetBrainsMono Nerd Font";
+      loginBackground = true;
+    })
+
   ];
 
 
