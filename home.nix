@@ -61,6 +61,12 @@
     pkgs.unzip
     pkgs.p7zip
     pkgs.brightnessctl
+    pkgs.grim        
+    pkgs.slurp        
+    pkgs.wl-clipboard
+    pkgs.cliphist
+    pkgs.hyprpicker
+    pkgs.gnupg
   ];
   
   home.file = {};
