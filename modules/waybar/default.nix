@@ -101,7 +101,7 @@
 
           cpu = {
             interval = 1;
-            format = " {usage:>2}%";
+            format = " {usage:>2}%";
             tooltip = true;
             tooltip-format = "CPU: {usage}%";
             on-click = "kitty -e htop";
@@ -109,7 +109,7 @@
 
           memory = {
             interval = 10;
-            format = " {used:0.1f}G";
+            format = " {used:0.1f}G";
             tooltip = true;
             tooltip-format = "RAM: {used:0.1f}G / {total:0.1f}G ({percentage}%)\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G";
             on-click = "kitty -e htop";
@@ -131,27 +131,41 @@
             tooltip = false;
           };
 
+          # --- Module Audio ---
           pulseaudio = {
-            format = "{icon}  {volume}%";
-            format-muted = "";
+            format = "<span color='#89dceb'>{icon}</span> {volume}%";
+            
+            format-muted = "<span color='#f38ba8'></span> Muted";
+            
+            format-source = "{volume}% ";
+            format-source-muted = "";
+            
             format-icons = {
-              default = [ "" "" " " ];
+              headphone = "";
+              hands-free = "";
+              headset = "";
+              phone = "";
+              portable = "";
+              car = "";
+              default = ["" "" ""];
             };
             on-click = "pavucontrol";
           };
 
+          # --- Module Batterie ---
           battery = {
-            interval = 2;
             states = {
               warning = 30;
               critical = 15;
             };
-            format = " {capacity}%";
-            format-full = " {capacity}%";
-            format-charging = " {capacity}%";
-            format-plugged = " {capacity}%";
-            format-alt = " {time}";
-            format-icons = [ "" "" "" "" "" ];
+            
+            format = "{icon} {capacity}%";
+            
+            format-charging = "<span color='#a6e3a1'></span> {capacity}%";
+            
+            format-plugged = " {capacity}%";
+            format-alt = "{time} {icon}";
+            format-icons = ["" "" "" "" ""];
           };
 
           "custom/lock" = {
