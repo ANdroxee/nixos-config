@@ -49,8 +49,7 @@
     pkgs.gh-copilot
     pkgs.gh
     pkgs.rofi
-    pkgs.psmisc  # Contient killall
-    # Ranger et dépendances
+    pkgs.psmisc 
     pkgs.ranger
     pkgs.file
     pkgs.imagemagick
@@ -81,6 +80,8 @@
     ./modules/hyprpaper/default.nix
     ./modules/zsh/default.nix
     ./modules/kitty/default.nix
+    ./modules/btop/default.nix
+    ./modules/fastfetch/default.nix
   ];
   
   hyprland.isDualMonitor = true;

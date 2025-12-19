@@ -143,7 +143,6 @@
     git
     polkit_gnome
     firefox
-    sddm-stray
   
 
   (catppuccin-sddm.override {
