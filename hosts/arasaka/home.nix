@@ -55,15 +55,8 @@
     imagemagick
     ffmpegthumbnailer
     poppler-utils
-    highlight
-    atool
-    unzip
-    p7zip
-    brightnessctl
-    grim        
-    slurp        
-    wl-clipboard
-    cliphist
+    highlight       # Écran 2 : Philips (Secondaire / Droite) - 60Hz
+        # Placé à 1920 pixels vers la droite (juste après l'ASUS)
     hyprpicker
     gnupg
   ];
@@ -105,11 +98,8 @@
       # CONFIGURATION DES ÉCRANS (ARASAKA)
       # ---------------------------------------------------------
       monitor = [
-        # Écran 1 : ASUS (Principal / Centre) - 240Hz activé !
         "DP-3, 1920x1080@240, 0x0, 1"
 
-        # Écran 2 : Philips (Secondaire / Droite) - 60Hz
-        # Placé à 1920 pixels vers la droite (juste après l'ASUS)
         "HDMI-A-1, 1680x1050@60, 1920x0, 1"
       ];
 
