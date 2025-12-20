@@ -24,7 +24,7 @@
     TERMINAL = "kitty";
   };
   
-  # Ranger configuration
+  
   programs.ranger = {
     enable = true;
     settings = {
@@ -55,9 +55,7 @@
     imagemagick
     ffmpegthumbnailer
     poppler-utils
-    highlight       # Écran 2 : Philips (Secondaire / Droite) - 60Hz
-        # Placé à 1920 pixels vers la droite (juste après l'ASUS)
-    hyprpicker
+    highlight     
     gnupg
   ];
   

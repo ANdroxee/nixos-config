@@ -3,9 +3,9 @@
 {
   programs.zoxide = {
     enable = true;
-    enableZshIntegration = true; # (ou Bash/Fish)
+    enableZshIntegration = true; 
     options = [
-      "--cmd cd" # Remplace la commande 'cd' par zoxide automatiquement
+      "--cmd cd" 
     ];
   };
 }

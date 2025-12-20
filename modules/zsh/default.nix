@@ -20,7 +20,7 @@
       path = "${config.home.homeDirectory}/.zsh_history";
     };
     
-    # Utiliser initContent au lieu de initExtra
+  
     initContent = ''
       # Powerlevel10k instant prompt
       if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
@@ -47,7 +47,7 @@
     ];
   };
   
-  # Définir Zsh comme shell par défaut
+ 
   home.sessionVariables = {
     SHELL = "${pkgs.zsh}/bin/zsh";
   };

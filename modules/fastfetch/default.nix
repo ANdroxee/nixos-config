@@ -7,15 +7,15 @@
     {
       "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
       "logo": {
-        "source": "nixos_small",  // <--- C'est ici que la magie opère
+        "source": "nixos_small",
         "padding": {
           "top": 2,
           "left": 1,
           "right": 2
         },
         "color": {
-          "1": "cyan",      // Couleur principale du logo (NixOS Blue)
-          "2": "blue"       // Couleur secondaire
+          "1": "cyan",      
+          "2": "blue"       
         }
       },
       "display": {

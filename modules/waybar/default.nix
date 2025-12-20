@@ -83,7 +83,7 @@
               weeks-pos = "right";
               on-scroll = 1;
               format = {
-                months = "<span color='#9ccfd8'><b>{}</b></span>"; # Bleu
+                months = "<span color='#9ccfd8'><b>{}</b></span>"; 
                 days = "<span color='#e0def4'><b>{}</b></span>";
                 weeks = "<span color='#c4a7e7'><b>W{}</b></span>";
                 today = "<span color='#eb6f92'><b><u>{}</u></b></span>";
@@ -144,7 +144,6 @@
         }
       ];
 
-      # --- STYLE CSS (Thème Bleu Yazi) ---
       style = ''
         * {
           font-family: "Maple Mono", "JetBrainsMono Nerd Font", sans-serif;
@@ -157,7 +156,6 @@
           background-color: transparent;
         }
 
-        /* --- CONTENEURS --- */
         .modules-left, .modules-center, .modules-right {
           background-color: #191724;
           border: 1px solid #1f1d2e;
@@ -167,7 +165,6 @@
 
         .modules-center { padding: 2px 15px; }
 
-        /* --- MODULES --- */
         #custom-launcher {
           color: #9ccfd8; /* Bleu */
           font-size: 16px;
@@ -178,26 +175,22 @@
 
         #workspaces button { padding: 0 6px; color: #908caa; }
         
-        /* Les chiffres actifs deviennent BLEUS */
         #workspaces button.active { color: #9ccfd8; } 
         
         #workspaces button:hover { color: #e0def4; }
 
         #cpu, #memory { color: #e0def4; padding-left: 8px; }
         
-        /* L'heure devient BLEUE */
         #clock { color: #9ccfd8; }
 
         #pulseaudio { color: #ebbcba; margin-right: 10px; }
         #network { color: #9ccfd8; margin-right: 10px; }
         #bluetooth { color: #c4a7e7; margin-right: 10px; }
         
-        /* Luminosité BLEUE */
         #backlight { color: #9ccfd8; margin-right: 10px; }
         
         #battery { color: #a6e3a1; margin-right: 10px; }
         
-        /* Batterie faible devient BLEUE (Warning) */
         #battery.warning { color: #9ccfd8; }
         #battery.critical { color: #eb6f92; }
 
@@ -210,7 +203,7 @@
 
         tooltip {
           background: #191724;
-          border: 1px solid #9ccfd8; /* Bordure du tooltip BLEUE */
+          border: 1px solid #9ccfd8; 
           border-radius: 8px;
         }
       '';
@@ -276,7 +269,6 @@
           background-size: 25%;
         }
 
-        /* Au survol, les boutons deviennent BLEUS */
         button:hover {
           background-color: #9ccfd8; 
           color: #191724;

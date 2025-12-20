@@ -1,15 +1,14 @@
 { pkgs, config, ... }:
 
 let
-  # --- TA PALETTE DE COULEURS (Thème "Stray") ---
   colors = {
-    bg = "#191724";        # Fond très sombre
-    bg-alt = "#1f1d2e";    # Fond un peu plus clair
-    border = "#ebbcba";    # Bordure (Rose/Orange pâle)
-    selected = "#26233a";  # Sélection
-    accent = "#f6c177";    # Accent (Orange/Or)
-    text = "#e0def4";      # Texte principal
-    text-alt = "#908caa";  # Texte secondaire
+    bg = "#191724";        
+    bg-alt = "#1f1d2e";    
+    border = "#ebbcba";    
+    selected = "#26233a";  
+    accent = "#f6c177";    
+    text = "#e0def4";      
+    text-alt = "#908caa";  
   };
 in
 {
@@ -55,7 +54,7 @@ in
 
     window {
       height: 600px;
-      width: 900px;  /* <--- C'est ici que j'ai élargi la fenêtre */
+      width: 900px;  
       border: 2px;
       border-radius: 12px;
       border-color: @border-col;
