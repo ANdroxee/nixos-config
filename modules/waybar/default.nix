@@ -12,333 +12,216 @@
   config = {
     programs.waybar = {
       enable = true;
-
+      
       settings = [
         {
           layer = "top";
           position = "top";
-          spacing = 0;
-          margin-bottom = -10;
-
+          
+          margin-top = 5;
+          margin-left = 10;
+          margin-right = 10;
+          
           modules-left = [
-            "custom/power"
+            "custom/launcher"
             "hyprland/workspaces"
-            "custom/uptime"
             "cpu"
             "memory"
           ];
 
-          modules-center = [ "clock" ];
-
-          modules-right = [
-            "custom/pomodoro"
-            "bluetooth"
-            "network"
-            "pulseaudio"
-            "backlight"
-            "battery"
+          modules-center = [ 
+            "clock" 
           ];
 
-          "custom/power" = {
-            format = "⏻";
+          modules-right = [
+            "pulseaudio"
+            "network"
+            "bluetooth"
+          ] 
+          ++ lib.optionals config.waybar.isLaptop [ "backlight" "battery" ] 
+          ++ [ "custom/power" ];
+
+          # --- MODULES ---
+
+          "custom/launcher" = {
+            format = "";
+            on-click = "rofi -show drun";
             tooltip = false;
-            on-click = "wlogout -p layer-shell";
           };
 
           "hyprland/workspaces" = {
-            format = "{name}: {icon}";
-            format-icons = {
-              active = "";
-              default = "";
+            format = "{name}";
+            on-click = "activate";
+            persistent-workspaces = {
+              "*" = 5;
             };
-          };
-
-          bluetooth = {
-            format = "󰂲  Bluetooth";
-            format-on = "{icon}  Bluetooth";
-            format-off = "{icon}  Désactivé";
-            format-connected = "{icon}  {device_alias}";
-            format-icons = {
-              on = "󰂯";
-              off = "󰂲";
-              connected = "󰂱";
-            };
-            on-click = "blueman-manager";
-            tooltip = true;
-            tooltip-format = "{status}";
-            tooltip-format-connected = "Connecté à:\n{device_enumerate}";
-            tooltip-format-enumerate-connected = "  {device_alias}";
-            max-length = 25;
-          };
-
-          "custom/music" = {
-            format = "  {}";
-            escape = true;
-            interval = 5;
-            tooltip = false;
-            exec = "playerctl metadata --format='{{ artist }} - {{ title }}'";
-            on-click = "playerctl play-pause";
-            max-length = 50;
-          };
-
-          clock = {
-            timezone = "Europe/Paris";
-            tooltip = false;
-            format = "{:%H:%M:%S  -  %A, %d}";
-            interval = 1;
-          };
-
-          network = {
-            format-wifi = "󰤢  {essid}";
-            format-ethernet = "󰈀  Ethernet";
-            format-disconnected = "󰤠  Déconnecté";
-            interval = 5;
-            tooltip = true;
-            tooltip-format = "Signal: {signalStrength}%\nIP: {ipaddr}\nFréquence: {frequency}MHz";
-            on-click = "nm-connection-editor";
-            max-length = 25;
           };
 
           cpu = {
-            interval = 1;
-            format = " {usage:>2}%";
-            tooltip = true;
-            tooltip-format = "CPU: {usage}%";
-            on-click = "kitty -e htop";
+            interval = 10;
+            format = " {usage}%";
+            max-length = 10;
+            on-click = "kitty -e btop";
           };
 
           memory = {
-            interval = 10;
-            format = " {used:0.1f}G";
+            interval = 30;
+            format = " {percentage}%";
+            max-length = 10;
             tooltip = true;
-            tooltip-format = "RAM: {used:0.1f}G / {total:0.1f}G ({percentage}%)\nSwap: {swapUsed:0.1f}G / {swapTotal:0.1f}G";
-            on-click = "kitty -e htop";
+            tooltip-format = "RAM: {used:0.1f}G / {total:0.1f}G";
+            on-click = "kitty -e btop";
           };
 
-          "custom/uptime" = {
-            format = "{}";
-            format-icon = [ "" ];
-            tooltip = false;
-            interval = 1600;
-            exec = "$/etc/nixos/modules/waybar/scripts/uptime.sh";
+          clock = {
+            format = "{:%H:%M}";
+            format-alt = "{:%A %d %B}";
+            tooltip-format = "<tt><small>{calendar}</small></tt>";
+            calendar = {
+              mode = "year";
+              mode-mon-col = 3;
+              weeks-pos = "right";
+              on-scroll = 1;
+              format = {
+                months = "<span color='#9ccfd8'><b>{}</b></span>"; # Bleu
+                days = "<span color='#e0def4'><b>{}</b></span>";
+                weeks = "<span color='#c4a7e7'><b>W{}</b></span>";
+                today = "<span color='#eb6f92'><b><u>{}</u></b></span>";
+              };
+            };
           };
 
-          backlight = {
-            format = "{icon}  {percent}%";
-            format-icons = [
-              "" "󰃜" "󰃛" "󰃞" "󰃝" "󰃟" "󰃠"
-            ];
-            tooltip = false;
-          };
-
-          # --- Module Audio ---
           pulseaudio = {
-            format = "<span color='#89dceb'>{icon}</span> {volume}%";
-            
-            format-muted = "<span color='#f38ba8'></span> Muted";
-            
-            format-source = "{volume}% ";
-            format-source-muted = "";
-            
+            format = "{icon} {volume}%";
+            format-muted = "  Muted";
             format-icons = {
-              headphone = "";
-              hands-free = "";
-              headset = "";
-              phone = "";
-              portable = "";
-              car = "";
               default = ["" "" ""];
             };
             on-click = "pavucontrol";
+            scroll-step = 5;
           };
 
-          # --- Module Batterie ---
+          network = {
+            format-wifi = " ";
+            format-ethernet = "󰈀 ";
+            format-disconnected = " ";
+            tooltip-format = "{ifname} via {gwaddr}";
+            tooltip-format-wifi = "{essid} ({signalStrength}%)";
+            tooltip-format-ethernet = "{ipaddr}/{cidr}";
+            on-click = "kitty -e nmtui";
+          };
+
+          bluetooth = {
+            format = "";
+            format-connected = " {device_alias}";
+            format-connected-battery = " {device_alias} {device_battery_percentage}%";
+            tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
+            on-click = "blueman-manager";
+          };
+
+          backlight = {
+            device = "intel_backlight";
+            format = "{icon} {percent}%";
+            format-icons = ["" "" "" "" "" "" "" "" ""];
+          };
+
           battery = {
             states = {
               warning = 30;
               critical = 15;
             };
-            
             format = "{icon} {capacity}%";
-            
-            format-charging = "<span color='#a6e3a1'></span> {capacity}%";
-            
+            format-charging = " {capacity}%";
             format-plugged = " {capacity}%";
-            format-alt = "{time} {icon}";
             format-icons = ["" "" "" "" ""];
           };
 
-          "custom/lock" = {
+          "custom/power" = {
+            format = "⏻ ";
             tooltip = false;
-            on-click = "sh -c '(sleep 0s; hyprlock)' & disown";
-            format = "";
-          };
-
-          "custom/pomodoro" = {
-            format = "{}";
-            return-type = "json";
-            exec = "waybar-module-pomodoro --no-work-icons";
-            on-click = "waybar-module-pomodoro toggle";
-            on-click-right = "waybar-module-pomodoro reset";
+            on-click = "wlogout";
           };
         }
       ];
 
+      # --- STYLE CSS (Thème Bleu Yazi) ---
       style = ''
-        /* --- Global Styles --- */
         * {
-          font-family: 'JetBrainsMono Nerd Font', 'Symbols Nerd Font', monospace;
-          font-size: 14px;
+          font-family: "Maple Mono", "JetBrainsMono Nerd Font", sans-serif;
+          font-size: 12px;
+          font-weight: bold;
           min-height: 0;
         }
 
-        #waybar {
-          background: transparent;
-          color: #c6d0f5;
-          margin: 0px;
-          font-weight: 500;
+        window#waybar {
+          background-color: transparent;
         }
 
-        /* --- Power Button --- */
-        #custom-power {
-          background-color: #e78284;
-          color: #1a1b26;
-          padding: 0.3rem 0.8rem;
-          margin: 5px 0px;
-          margin-left: 7px;
-          margin-right: 5px;
-          border-radius: 6px;
+        /* --- CONTENEURS --- */
+        .modules-left, .modules-center, .modules-right {
+          background-color: #191724;
+          border: 1px solid #1f1d2e;
+          padding: 2px 10px;
+          border-radius: 15px;
+        }
+
+        .modules-center { padding: 2px 15px; }
+
+        /* --- MODULES --- */
+        #custom-launcher {
+          color: #9ccfd8; /* Bleu */
           font-size: 16px;
-          font-weight: bold;
-          box-shadow: 0 1px 3px rgba(231,130,132,0.3);
-          transition: all 0.2s ease-in-out;
+          margin-right: 10px;
+          padding-right: 10px;
+          border-right: 1px solid #26233a;
         }
 
-        #custom-power:hover {
-          background-color: #ea999c;
-          box-shadow: 0 2px 6px rgba(231,130,132,0.5);
+        #workspaces button { padding: 0 6px; color: #908caa; }
+        
+        /* Les chiffres actifs deviennent BLEUS */
+        #workspaces button.active { color: #9ccfd8; } 
+        
+        #workspaces button:hover { color: #e0def4; }
+
+        #cpu, #memory { color: #e0def4; padding-left: 8px; }
+        
+        /* L'heure devient BLEUE */
+        #clock { color: #9ccfd8; }
+
+        #pulseaudio { color: #ebbcba; margin-right: 10px; }
+        #network { color: #9ccfd8; margin-right: 10px; }
+        #bluetooth { color: #c4a7e7; margin-right: 10px; }
+        
+        /* Luminosité BLEUE */
+        #backlight { color: #9ccfd8; margin-right: 10px; }
+        
+        #battery { color: #a6e3a1; margin-right: 10px; }
+        
+        /* Batterie faible devient BLEUE (Warning) */
+        #battery.warning { color: #9ccfd8; }
+        #battery.critical { color: #eb6f92; }
+
+        #custom-power {
+          color: #eb6f92;
+          margin-left: 5px;
+          padding-left: 8px;
+          border-left: 1px solid #26233a;
         }
-
-        /* --- Left Modules --- */
-        #workspaces,
-        #custom-uptime,
-        #cpu,
-        #memory {
-          background-color: #1a1b26;
-          padding: 0.3rem 0.7rem;
-          margin: 5px 0px;
-          border-radius: 6px;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-          transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
-        }
-
-        #workspaces { padding: 2px; margin-right: 5px; }
-        #custom-uptime { margin-right: 5px; }
-        #cpu { margin-right: 5px; }
-
-        #custom-uptime:hover,
-        #cpu:hover,
-        #memory:hover { background-color: rgb(41, 42, 53); }
-
-        #workspaces button {
-          color: #babbf1;
-          border-radius: 5px;
-          padding: 0.3rem 0.6rem;
-          background: transparent;
-          transition: all .2s;
-        }
-
-        #workspaces button.active {
-          color: #99d1db;
-          background-color: rgba(153, 209, 219, 0.1);
-        }
-
-        #workspaces button:hover {
-          background: rgb(41,42,53);
-          color: #c6d0f5;
-        }
-
-        /* --- Center --- */
-        #clock {
-          background-color: #1a1b26;
-          padding: 0.3rem 0.7rem;
-          margin: 5px 0px;
-          border-radius: 6px;
-          box-shadow: 0 1px 3px rgba(153,209,219,0.2);
-        }
-
-        #clock:hover { background-color: rgba(153,209,219,0.1); }
-
-        /* Pomodoro */
-        #custom-pomodoro {
-          background-color: #1a1b26;
-          padding: 0.3rem 0.7rem;
-          margin: 5px 0px;
-          border-radius: 6px;
-          transition: .2s;
-          color: #babbf1;
-        }
-
-        #custom-pomodoro:hover {
-          background-color: rgb(41,42,53);
-          color: #c6d0f5;
-          outline: 1px solid rgba(255,255,255,0.1);
-          outline-offset: -1px;
-        }
-
-        #custom-pomodoro.work,
-        #custom-pomodoro.break {
-          color: #99d1db;
-          background-color: rgba(153,209,219,0.1);
-        }
-
-        /* --- Right Modules --- */
-        #bluetooth,
-        #pulseaudio,
-        #backlight,
-        #network,
-        #custom-lock,
-        #battery {
-          background-color: #1a1b26;
-          padding: 0.3rem 0.7rem;
-          margin: 5px 0px;
-        }
-
-        #bluetooth {
-          border-top-left-radius: 6px;
-          border-bottom-left-radius: 6px;
-          color: #888;
-        }
-        #battery {
-          border-top-right-radius: 6px;
-          border-bottom-right-radius: 6px;
-          margin-right: 7px;
-        }
-
-        /* Colors */
-        #battery { color:#99d1db; }
-        #battery.charging { color:#a6d189; }
-        #battery.warning:not(.charging) { color:#e78284; }
-        #bluetooth.connected { color:#99d1db; }
 
         tooltip {
-          background-color: #1a1b26;
-          color: #dddddd;
-          padding: 5px 12px;
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 6px;
+          background: #191724;
+          border: 1px solid #9ccfd8; /* Bordure du tooltip BLEUE */
+          border-radius: 8px;
         }
       '';
     };
 
-    # Installer wlogout pour le menu power
-    home.packages = with pkgs; [
-      wlogout
-    ];
-
-    # Configuration de wlogout
+    # ---------------------------------------------------
+    # CONFIGURATION WLOGOUT (Boutons Power)
+    # ---------------------------------------------------
     programs.wlogout = {
       enable = true;
+      
       layout = [
         {
           label = "lock";
@@ -347,10 +230,10 @@
           keybind = "l";
         }
         {
-          label = "logout";
-          action = "hyprctl dispatch exit";
-          text = "Déconnexion";
-          keybind = "e";
+          label = "reboot";
+          action = "systemctl reboot";
+          text = "Redémarrer";
+          keybind = "r";
         }
         {
           label = "shutdown";
@@ -359,18 +242,19 @@
           keybind = "s";
         }
         {
+          label = "logout";
+          action = "hyprctl dispatch exit 0";
+          text = "Déconnexion";
+          keybind = "e";
+        }
+        {
           label = "suspend";
           action = "systemctl suspend";
           text = "Veille";
           keybind = "u";
         }
-        {
-          label = "reboot";
-          action = "systemctl reboot";
-          text = "Redémarrer";
-          keybind = "r";
-        }
       ];
+
       style = ''
         * {
           background-image: none;
@@ -378,32 +262,29 @@
         }
 
         window {
-          background-color: rgba(26, 27, 38, 0.95);
+          background-color: rgba(25, 23, 36, 0.85);
         }
 
         button {
-          border-radius: 8px;
-          border: 2px solid #1a1b26;
-          background-color: #1a1b26;
+          border-radius: 15px;
+          border: 2px solid #eb6f92; 
+          background-color: #1f1d2e;
+          color: #e0def4;
+          margin: 10px;
           background-repeat: no-repeat;
           background-position: center;
           background-size: 25%;
-          color: #c6d0f5;
-          margin: 10px;
-          transition: all 0.2s ease-in-out;
         }
 
+        /* Au survol, les boutons deviennent BLEUS */
         button:hover {
-          background-color: rgba(153, 209, 219, 0.1);
-          border-color: #99d1db;
-          color: #99d1db;
+          background-color: #9ccfd8; 
+          color: #191724;
+          border-color: #9ccfd8;
+          animation: gradient_f 20s ease-in infinite;
+          transition: all 0.3s cubic-bezier(.55,0.0,.28,1.682);
         }
-
-        button:focus {
-          background-color: #99d1db;
-          color: #1a1b26;
-        }
-
+        
         #lock {
           background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"));
         }
