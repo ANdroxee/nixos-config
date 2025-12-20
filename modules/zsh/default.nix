@@ -8,10 +8,10 @@
     syntaxHighlighting.enable = true;
     
     shellAliases = {
-      ll = "ls -la";
+      #ll = "ls -la";
       update = "sudo nixos-rebuild switch";
       hm = "home-manager switch";
-      ls = "ls --color=auto";
+      #ls = "ls --color=auto";
       grep = "grep --color=auto";
     };
     

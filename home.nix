@@ -83,6 +83,10 @@
     ./modules/btop/default.nix
     ./modules/fastfetch/default.nix
     ./modules/starship/default.nix
+    ./modules/eza/default.nix
+    ./modules/bat/default.nix
+    ./modules/zoxide/default.nix
+    ./modules/cava/default.nix
   ];
   
   hyprland.isDualMonitor = true;
