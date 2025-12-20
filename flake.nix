@@ -12,20 +12,35 @@
   };
 
   outputs = { self, nixpkgs, home-manager, ... }: {
-    nixosConfigurations.androxe = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
-      modules = [ ./hosts/androxe/configuration.nix
+    nixosConfigurations = {
+      androxe = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [ 
+          ./hosts/androxe/configuration.nix
 
-        home-manager.nixosModules.home-manager
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.androxe = import ./hosts/androxe/home.nix;
+          }
+        ];
+      };
 
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
+      arasaka = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [ 
+          ./hosts/arasaka/configuration.nix
 
-          home-manager.users.androxe = import ./hosts/androxe/home.nix;
-        }
-      ];
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.androxe = import ./hosts/arasaka/home.nix;
+          }
+        ];
+      };
+
     };
   };
 }
-
