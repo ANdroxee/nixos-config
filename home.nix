@@ -87,6 +87,8 @@
     ./modules/bat/default.nix
     ./modules/zoxide/default.nix
     ./modules/cava/default.nix
+    ./modules/yazi/default.nix
+    ./modules/lazygit/default.nix
   ];
   
   hyprland.isDualMonitor = true;
