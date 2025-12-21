@@ -57,6 +57,7 @@
     poppler-utils
     highlight     
     gnupg
+    steam-run
   ];
   
   home.file = {};

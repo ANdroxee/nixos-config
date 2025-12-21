@@ -6,7 +6,6 @@
 # Autostart necessary processes (like notifications daemons, status bars, etc.)
 # Or execute your favorite apps at launch like this:
 
- exec-once = kitty
  exec-once = waybar & hyprpaper
  exec-once = wl-paste --type text --watch cliphist store 
  exec-once = wl-paste --type image --watch cliphist store
