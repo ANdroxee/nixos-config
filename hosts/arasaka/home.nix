@@ -63,6 +63,7 @@
     wl-clipboard
     cliphist
     hyprpicker
+    cbonsai
   ];
   
   home.file = {};
