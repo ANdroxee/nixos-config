@@ -3,32 +3,35 @@
 ### KEYBINDINGS ###
 ###################
 
+# --- Variables ---
 $mainMod = SUPER
+$terminal = kitty
+$fileManager = kitty -e ranger
+$menu = rofi -show drun
+
+# --- CAPTURE D'ÉCRAN (Sans touche Impr.Ecran) ---
+
+bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" - | wl-copy
+bind = $mainMod CTRL, S, exec, grim "$HOME/Pictures/Capture_$(date +%Y%m%d_%H%M%S).png"
+
 
 # --- Applications ---
 bind = $mainMod, Q, exec, $terminal
 bind = $mainMod, E, exec, $fileManager
-bind = $mainMod, R, exec, rofi -show drun
+bind = $mainMod, R, exec, $menu
 bind = $mainMod, L, exec, hyprlock
 
 # --- Fenêtres ---
 bind = $mainMod, C, killactive,
 bind = $mainMod, M, exit, 
+bind = $mainMod, F, togglefloating, 
 bind = $mainMod, P, pseudo, # dwindle
 bind = $mainMod, J, togglesplit, # dwindle
 
-# Mode flottant sur F
-bind = $mainMod, F, togglefloating, 
-
 # --- Utilitaires ---
-# On ajoute 'sh -c' et des guillemets pour sécuriser la commande
-bind = , Print, exec, sh -c 'grim "$HOME/Pictures/Capture_$(date +%Y%m%d_%H%M%S).png"'
-
-# Historique du Presse-papier (Super + V)
 bind = $mainMod, V, exec, cliphist list | wofi --dmenu | cliphist decode | wl-copy
-
-# Pipette couleur (Super + N)
 bind = $mainMod, N, exec, hyprpicker -a | wl-copy
+
 
 # --- Navigation (Flèches) ---
 bind = $mainMod, left, movefocus, l
@@ -48,7 +51,7 @@ bind = $mainMod, code:17, workspace, 8
 bind = $mainMod, code:18, workspace, 9
 bind = $mainMod, code:19, workspace, 10
 
-# --- Déplacer vers Workspace ---
+# --- Déplacer la fenêtre vers Workspace ---
 bind = $mainMod SHIFT, code:10, movetoworkspace, 1
 bind = $mainMod SHIFT, code:11, movetoworkspace, 2
 bind = $mainMod SHIFT, code:12, movetoworkspace, 3
@@ -60,9 +63,10 @@ bind = $mainMod SHIFT, code:17, movetoworkspace, 8
 bind = $mainMod SHIFT, code:18, movetoworkspace, 9
 bind = $mainMod SHIFT, code:19, movetoworkspace, 10
 
-# --- Special Workspace ---
+# --- Special Workspace (Magic) ---
+# Ouvrir/Fermer le special workspace
 bind = $mainMod, S, togglespecialworkspace, magic
-bind = $mainMod SHIFT, S, movetoworkspace, special:magic
+bind = $mainMod ALT, S, movetoworkspace, special:magic
 
 # --- Souris ---
 bind = $mainMod, mouse_down, workspace, e+1
@@ -78,7 +82,7 @@ bindel = ,XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle
 bindel = ,XF86MonBrightnessUp, exec, brightnessctl -e4 -n2 set 5%+
 bindel = ,XF86MonBrightnessDown, exec, brightnessctl -e4 -n2 set 5%-
 
-# --- Playerctl ---
+# --- Contrôle Média (Playerctl) ---
 bindl = , XF86AudioNext, exec, playerctl next
 bindl = , XF86AudioPause, exec, playerctl play-pause
 bindl = , XF86AudioPlay, exec, playerctl play-pause

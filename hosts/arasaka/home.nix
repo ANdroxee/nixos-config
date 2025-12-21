@@ -58,6 +58,11 @@
     highlight     
     gnupg
     steam-run
+    grim
+    slurp
+    wl-clipboard
+    cliphist
+    hyprpicker
   ];
   
   home.file = {};
