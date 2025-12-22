@@ -64,6 +64,7 @@
     cliphist
     hyprpicker
     cbonsai
+    pavucontrol
   ];
   
   home.file = {};
