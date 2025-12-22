@@ -65,6 +65,8 @@
     hyprpicker
     cbonsai
     pavucontrol
+    duf
+    ncdu
   ];
   
   home.file = {};
