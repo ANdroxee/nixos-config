@@ -66,12 +66,15 @@
     cbonsai
     pavucontrol
     duf
+    hyprpaper
     ncdu
   ];
   
   home.file = {};
   
   programs.home-manager.enable = true;
+
+  hyprland.isDualMonitor = true;
   
   imports = [
     ../../modules/waybar/default.nix
@@ -91,39 +94,5 @@
     ../../modules/yazi/default.nix
     ../../modules/lazygit/default.nix
   ];
-  
-  hyprland.isDualMonitor = true;
-  waybar.isLaptop = false;
-  
-  wayland.windowManager.hyprland = {
-    enable = true;
-    package = null;
-    portalPackage = null;
-    settings = {
-      "$mod" = "SUPER";
 
-      # ---------------------------------------------------------
-      # CONFIGURATION DES ÉCRANS (ARASAKA)
-      # ---------------------------------------------------------
-      monitor = [
-        "DP-3, 1920x1080@240, 0x0, 1"
-
-        "HDMI-A-1, 1680x1050@60, 1920x0, 1"
-      ];
-
-      # ---------------------------------------------------------
-      # ASSIGNATION DES WORKSPACES
-      # ---------------------------------------------------------
-      workspace = [
-        "1, monitor:DP-3"
-        "2, monitor:DP-3"
-        "3, monitor:DP-3"
-        "4, monitor:DP-3"
-        "5, monitor:DP-3"
-        
-        "6, monitor:HDMI-A-1"
-        "7, monitor:HDMI-A-1"
-      ];
-    };
-  };
 }
