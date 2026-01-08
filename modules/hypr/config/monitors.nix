@@ -1,33 +1,29 @@
 { config, ... }:
 
 if config.hyprland.isDualMonitor then ''
-# -----------------------------------------------------
-# CONFIGURATION FINALISÉE
-# -----------------------------------------------------
+################
+### MONITORS ###
+################
 
-# 1. Écran DP-2 (Principal - Gamer) à GAUCHE (0x0)
-# On force le 240Hz
-monitor=DP-2,1920x1080@240,0x0,1
 
-# 2. Écran HDMI (Secondaire) à DROITE
-# Il commence à 1920 (juste après le principal)
-monitor=HDMI-A-1,1680x1050@60,1920x0,1
+monitor=desc:ASUSTek COMPUTER INC VG27VQM R1LMDW005861,1920x1080@240,0x0,1
 
-# Workspaces sur DP-2
-workspace=1,monitor:DP-2
-workspace=2,monitor:DP-2
-workspace=3,monitor:DP-2
-workspace=4,monitor:DP-2
-workspace=5,monitor:DP-2
 
-# Workspaces sur HDMI
-workspace=6,monitor:HDMI-A-1
-workspace=7,monitor:HDMI-A-1
-workspace=8,monitor:HDMI-A-1
-workspace=9,monitor:HDMI-A-1
-workspace=10,monitor:HDMI-A-1
+monitor=desc:Philips Consumer Electronics Company Philips 220V4 UK41531015786,1680x1050@60,1920x0,1
+
+##################
+### WORKSPACES ###
+##################
+
+workspace=1,monitor:desc:ASUSTek COMPUTER INC VG27VQM R1LMDW005861
+workspace=2,monitor:desc:ASUSTek COMPUTER INC VG27VQM R1LMDW005861
+workspace=3,monitor:desc:ASUSTek COMPUTER INC VG27VQM R1LMDW005861
+workspace=4,monitor:desc:ASUSTek COMPUTER INC VG27VQM R1LMDW005861
+workspace=5,monitor:desc:ASUSTek COMPUTER INC VG27VQM R1LMDW005861
+
+workspace=6,monitor:desc:Philips Consumer Electronics Company Philips 220V4 UK41531015786
+workspace=7,monitor:desc:Philips Consumer Electronics Company Philips 220V4 UK41531015786
 
 '' else ''
-# Mode Solo
 monitor=,preferred,auto,1
 ''

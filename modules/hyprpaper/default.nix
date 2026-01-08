@@ -7,12 +7,14 @@
       ipc = "on";
       splash = false;
       preload = [ 
-        "/etc/nixos/wallpaper/wallpaper.jpg" 
+        "/home/androxe/Images/wallpaper.jpg" 
       ];
-      # C'est ici que la magie opère : on dit explicitement quelle image va où
+      
+      # LA SOLUTION UNIVERSELLE :
+      # La virgule au début signifie "Applique sur tous les moniteurs trouvés"
+      # Plus besoin de se soucier si c'est DP-1, DP-2 ou HDMI-A-1 !
       wallpaper = [ 
-        "DP-2,/etc/nixos/wallpaper/wallpaper.jpg"      # Pour l'écran 240Hz
-        "HDMI-A-1,/etc/nixos/wallpaper/wallpaper.jpg"  # Pour l'écran secondaire
+        ",/home/androxe/Images/wallpaper.jpg"
       ];
     };
   };
