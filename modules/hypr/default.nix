@@ -1,6 +1,9 @@
-{ config, lib, pkgs, ... }:
+
+{ config, lib, pkgs, osConfig, ... }:
+
 let
-  monitors = import ./config/monitors.nix { inherit config; };
+  monitors = import ./config/monitors.nix { inherit config pkgs osConfig; };
+  
   keybindings = import ./config/keybindings.nix;
   animations = import ./config/animations.nix;
   autostart = import ./config/autostart.nix;
