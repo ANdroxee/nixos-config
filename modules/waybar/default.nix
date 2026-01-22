@@ -54,7 +54,7 @@
 
         "memory" = {
           interval = 30;
-          format = " {percentage}%";
+          format = " {percentage}%";
           on-click = "kitty -e btop";
         };
 
