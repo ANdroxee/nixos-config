@@ -12,142 +12,135 @@
   config = {
     programs.waybar = {
       enable = true;
-      
-      settings = [
-        {
-          layer = "top";
-          position = "top";
-          
-          margin-top = 5;
-          margin-left = 10;
-          margin-right = 10;
-          
-          modules-left = [
-            "custom/launcher"
-            "hyprland/workspaces"
-            "cpu"
-            "memory"
-          ];
+      systemd.enable = true;
 
-          modules-center = [ 
-            "clock" 
-          ];
+      settings = [{
+        layer = "top";
+        position = "top";
+        margin-top = 5;
+        margin-left = 10;
+        margin-right = 10;
+        
+        modules-left = [ "custom/launcher" "hyprland/workspaces" "cpu" "memory" ];
+        modules-center = [ "clock" ];
+        # AJOUT DU BLUETOOTH ICI (entre pulseaudio et network)
+        modules-right = [ "tray" "pulseaudio" "bluetooth" "network" "battery" "custom/power" ];
 
-          modules-right = [
-            "pulseaudio"
-            "network"
-            "bluetooth"
-          ] 
-          ++ lib.optionals config.waybar.isLaptop [ "backlight" "battery" ] 
-          ++ [ "custom/power" ];
+        # --- MODULES ---
+        
+        "custom/launcher" = {
+          format = "";
+          on-click = "rofi -show drun";
+          tooltip = false;
+        };
 
-          # --- MODULES ---
+        "hyprland/workspaces" = {
+          disable-scroll = true;
+          all-outputs = true;
+          on-click = "activate";
+          format = "{name}";
+        };
 
-          "custom/launcher" = {
-            format = "";
-            on-click = "rofi -show drun";
-            tooltip = false;
+        "tray" = {
+          icon-size = 18;
+          spacing = 10;
+        };
+
+        "cpu" = {
+          interval = 10;
+          format = " {usage}%";
+          on-click = "kitty -e btop";
+        };
+
+        "memory" = {
+          interval = 30;
+          format = " {percentage}%";
+          on-click = "kitty -e btop";
+        };
+
+        "clock" = {
+          format = "{:%H:%M}";
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+          format-alt = "{:%Y-%m-%d}";
+        };
+
+        "pulseaudio" = {
+          format = "{icon} {volume}%";
+          format-muted = "";
+          format-icons = {
+            default = ["" "" ""];
           };
+          on-click = "pavucontrol";
+        };
 
-          "hyprland/workspaces" = {
-            format = "{name}";
-            on-click = "activate";
-            persistent-workspaces = {
-              "*" = 5;
-            };
-          };
+        # CONFIGURATION BLUETOOTH
+        "bluetooth" = {
+          format = " {status}";
+          format-connected = " {device_alias}";
+          format-connected-battery = " {device_alias} {device_battery_percentage}%";
+          tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
+          tooltip-format-connected = "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}";
+          on-click = "blueman-manager";
+        };
 
-          cpu = {
-            interval = 10;
-            format = " {usage}%";
-            max-length = 10;
-            on-click = "kitty -e btop";
-          };
+        "network" = {
+          format-wifi = " {signalStrength}%";
+          format-ethernet = "󰈀";
+          tooltip-format = "{essid} - {ifname} via {gwaddr}";
+          format-disconnected = "";
+          on-click = "kitty -e nmtui";
+        };
 
-          memory = {
-            interval = 30;
-            format = " {percentage}%";
-            max-length = 10;
-            tooltip = true;
-            tooltip-format = "RAM: {used:0.1f}G / {total:0.1f}G";
-            on-click = "kitty -e btop";
+        "battery" = {
+          states = {
+            warning = 30;
+            critical = 15;
           };
-
-          clock = {
-            format = "{:%H:%M}";
-            format-alt = "{:%A %d %B}";
-            tooltip-format = "<tt><small>{calendar}</small></tt>";
-            calendar = {
-              mode = "year";
-              mode-mon-col = 3;
-              weeks-pos = "right";
-              on-scroll = 1;
-              format = {
-                months = "<span color='#9ccfd8'><b>{}</b></span>"; 
-                days = "<span color='#e0def4'><b>{}</b></span>";
-                weeks = "<span color='#c4a7e7'><b>W{}</b></span>";
-                today = "<span color='#eb6f92'><b><u>{}</u></b></span>";
-              };
-            };
-          };
-
-          pulseaudio = {
-            format = "{icon} {volume}%";
-            format-muted = "  Muted";
-            format-icons = {
-              default = ["" "" ""];
-            };
-            on-click = "pavucontrol";
-            scroll-step = 5;
-          };
-
-          network = {
-            format-wifi = " ";
-            format-ethernet = "󰈀 ";
-            format-disconnected = " ";
-            tooltip-format = "{ifname} via {gwaddr}";
-            tooltip-format-wifi = "{essid} ({signalStrength}%)";
-            tooltip-format-ethernet = "{ipaddr}/{cidr}";
-            on-click = "kitty -e nmtui";
-          };
-
-          bluetooth = {
-            format = "";
-            format-connected = " {device_alias}";
-            format-connected-battery = " {device_alias} {device_battery_percentage}%";
-            tooltip-format = "{controller_alias}\t{controller_address}\n\n{num_connections} connected";
-            on-click = "blueman-manager";
-          };
-
-          backlight = {
-            device = "intel_backlight";
-            format = "{icon} {percent}%";
-            format-icons = ["" "" "" "" "" "" "" "" ""];
-          };
-
-          battery = {
-            states = {
-              warning = 30;
-              critical = 15;
-            };
-            format = "{icon} {capacity}%";
-            format-charging = " {capacity}%";
-            format-plugged = " {capacity}%";
-            format-icons = ["" "" "" "" ""];
-          };
-
-          "custom/power" = {
-            format = "⏻ ";
-            tooltip = false;
-            on-click = "wlogout";
-          };
-        }
-      ];
+          format = "{icon} {capacity}%";
+          format-charging = " {capacity}%";
+          format-plugged = " {capacity}%";
+          format-icons = ["" "" "" "" ""];
+        };
+        
+        "custom/power" = {
+          format = "⏻";
+          tooltip = false;
+          on-click = "wlogout";
+        };
+      }];
 
       style = ''
+        /* PALETTE CATPPUCCIN MOCHA */
+        @define-color base   #1e1e2e;
+        @define-color mantle #181825;
+        @define-color crust  #11111b;
+        @define-color text     #cdd6f4;
+        @define-color subtext0 #a6adc8;
+        @define-color subtext1 #bac2de;
+        @define-color surface0 #313244;
+        @define-color surface1 #45475a;
+        @define-color surface2 #585b70;
+        @define-color overlay0 #6c7086;
+        @define-color overlay1 #7f849c;
+        @define-color overlay2 #9399b2;
+        @define-color blue      #89b4fa;
+        @define-color lavender  #b4befe;
+        @define-color sapphire  #74c7ec;
+        @define-color sky       #89dceb;
+        @define-color teal      #94e2d5;
+        @define-color green     #a6e3a1;
+        @define-color yellow    #f9e2af;
+        @define-color peach     #fab387;
+        @define-color maroon    #eba0ac;
+        @define-color red       #f38ba8;
+        @define-color mauve     #cba6f7;
+        @define-color pink      #f5c2e7;
+        @define-color flamingo  #f2cdcd;
+        @define-color rosewater #f5e0dc;
+
         * {
-          font-family: "Maple Mono", "JetBrainsMono Nerd Font", sans-serif;
-          font-size: 12px;
+          font-family: "JetBrainsMono Nerd Font", Roboto, Helvetica, Arial, sans-serif;
+          font-size: 13px;
           font-weight: bold;
           min-height: 0;
         }
@@ -156,146 +149,109 @@
           background-color: transparent;
         }
 
-        .modules-left, .modules-center, .modules-right {
-          background-color: #191724;
-          border: 1px solid #1f1d2e;
-          padding: 2px 10px;
+        #workspaces,
+        #custom-launcher,
+        #cpu,
+        #memory,
+        #clock,
+        #pulseaudio,
+        #bluetooth,   /* AJOUT DU BLUETOOTH DANS LA LISTE CSS */
+        #network,
+        #battery,
+        #custom-power,
+        #tray {
+          background-color: @base;
+          color: @text;
           border-radius: 15px;
+          padding: 5px 15px;
+          margin-top: 5px;
+          margin-bottom: 5px;
+          margin-left: 6px; 
+          margin-right: 6px;
+          box-shadow: 2px 2px 2px 1px rgba(0,0,0,0.2);
+          border: 1px solid @surface1;
         }
-
-        .modules-center { padding: 2px 15px; }
 
         #custom-launcher {
-          color: #9ccfd8; /* Bleu */
+          color: @blue;
+          padding-right: 20px;
           font-size: 16px;
-          margin-right: 10px;
-          padding-right: 10px;
-          border-right: 1px solid #26233a;
         }
 
-        #workspaces button { padding: 0 6px; color: #908caa; }
+        #workspaces button {
+          color: @overlay1;
+          padding: 0 5px;
+        }
+        #workspaces button.active {
+          color: @blue;
+        }
         
-        #workspaces button.active { color: #9ccfd8; } 
-        
-        #workspaces button:hover { color: #e0def4; }
+        #clock {
+          background-color: @surface0;
+          color: @blue;
+        }
 
-        #cpu, #memory { color: #e0def4; padding-left: 8px; }
+        #cpu { color: @sapphire; }
+        #memory { color: @teal; }
         
-        #clock { color: #9ccfd8; }
-
-        #pulseaudio { color: #ebbcba; margin-right: 10px; }
-        #network { color: #9ccfd8; margin-right: 10px; }
-        #bluetooth { color: #c4a7e7; margin-right: 10px; }
+        #pulseaudio { color: @mauve; }
         
-        #backlight { color: #9ccfd8; margin-right: 10px; }
+        /* Couleur du Bluetooth */
+        #bluetooth { color: @blue; }
         
-        #battery { color: #a6e3a1; margin-right: 10px; }
+        #network { color: @lavender; }
+        #network.disconnected { color: @red; }
         
-        #battery.warning { color: #9ccfd8; }
-        #battery.critical { color: #eb6f92; }
+        #battery { color: @green; margin-left: 10px; }
+        #battery.charging { color: @yellow; }
+        #battery.critical { color: @red; }
 
         #custom-power {
-          color: #eb6f92;
-          margin-left: 5px;
-          padding-left: 8px;
-          border-left: 1px solid #26233a;
+          background-color: @red;
+          color: @base;
         }
-
-        tooltip {
-          background: #191724;
-          border: 1px solid #9ccfd8; 
-          border-radius: 8px;
-        }
+        
+        #tray { padding: 5px 10px; }
       '';
     };
 
     # ---------------------------------------------------
-    # CONFIGURATION WLOGOUT (Boutons Power)
+    # CONFIGURATION WLOGOUT
     # ---------------------------------------------------
     programs.wlogout = {
       enable = true;
-      
       layout = [
-        {
-          label = "lock";
-          action = "hyprlock";
-          text = "Verrouiller";
-          keybind = "l";
-        }
-        {
-          label = "reboot";
-          action = "systemctl reboot";
-          text = "Redémarrer";
-          keybind = "r";
-        }
-        {
-          label = "shutdown";
-          action = "systemctl poweroff";
-          text = "Éteindre";
-          keybind = "s";
-        }
-        {
-          label = "logout";
-          action = "hyprctl dispatch exit 0";
-          text = "Déconnexion";
-          keybind = "e";
-        }
-        {
-          label = "suspend";
-          action = "systemctl suspend";
-          text = "Veille";
-          keybind = "u";
-        }
+        { label = "lock"; action = "hyprlock"; text = "Verrouiller"; keybind = "l"; }
+        { label = "reboot"; action = "systemctl reboot"; text = "Redémarrer"; keybind = "r"; }
+        { label = "shutdown"; action = "systemctl poweroff"; text = "Éteindre"; keybind = "s"; }
+        { label = "logout"; action = "hyprctl dispatch exit 0"; text = "Déconnexion"; keybind = "e"; }
+        { label = "suspend"; action = "systemctl suspend"; text = "Veille"; keybind = "u"; }
       ];
-
       style = ''
-        * {
-          background-image: none;
-          box-shadow: none;
-        }
-
-        window {
-          background-color: rgba(25, 23, 36, 0.85);
-        }
-
+        * { background-image: none; box-shadow: none; }
+        window { background-color: rgba(30, 30, 46, 0.85); }
         button {
           border-radius: 15px;
-          border: 2px solid #eb6f92; 
-          background-color: #1f1d2e;
-          color: #e0def4;
+          border: 2px solid #313244;
+          background-color: #1e1e2e;
+          color: #cdd6f4;
           margin: 10px;
           background-repeat: no-repeat;
           background-position: center;
           background-size: 25%;
         }
-
         button:hover {
-          background-color: #9ccfd8; 
-          color: #191724;
-          border-color: #9ccfd8;
+          background-color: #89b4fa;
+          color: #1e1e2e;
+          border-color: #89b4fa;
           animation: gradient_f 20s ease-in infinite;
           transition: all 0.3s cubic-bezier(.55,0.0,.28,1.682);
         }
-        
-        #lock {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"));
-        }
-
-        #logout {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"));
-        }
-
-        #suspend {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"));
-        }
-
-        #shutdown {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"));
-        }
-
-        #reboot {
-          background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"));
-        }
+        #lock { background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png")); }
+        #logout { background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png")); }
+        #suspend { background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png")); }
+        #shutdown { background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png")); }
+        #reboot { background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png")); }
       '';
     };
   };
