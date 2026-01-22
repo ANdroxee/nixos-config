@@ -7,11 +7,11 @@
       ipc = "on";
       splash = false;
       preload = [ 
-        "/etc/nixos/wallpaper/wallpaper.jpg" 
+        "${./wallpaper/wallpaper.jpg}"
       ];
       
       wallpaper = [ 
-        ",/etc/nixos/wallpaper/wallpaper.jpg"
+        "${./wallpaper/wallpaper.jpg}"
       ];
     };
   };

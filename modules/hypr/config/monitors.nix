@@ -10,7 +10,6 @@ if hostname == "arasaka" then ''
 ################
 
 monitor=desc:ASUSTek COMPUTER INC VG27VQM R1LMDW005861,1920x1080@240,0x0,1
-
 monitor=desc:Philips Consumer Electronics Company Philips 220V4 UK41531015786,1680x1050@60,1920x0,1
 
 workspace = 1, monitor:desc:ASUSTek COMPUTER INC VG27VQM R1LMDW005861
@@ -26,8 +25,8 @@ workspace = 7, monitor:desc:Philips Consumer Electronics Company Philips 220V4 U
 ### WINDOWS AND WORKSPACES ###
 ##############################
 
-windowrule = suppressevent maximize, class:.*
-windowrule = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
+# CORRECTION ICI : Passage en windowrulev2 et suppression de suppressevent
+windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
 
 windowrulev2 = float,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
 windowrulev2 = size 1200 800,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
@@ -45,8 +44,8 @@ monitor=,preferred,auto,1
 ### WINDOWS AND WORKSPACES ###
 ##############################
 
-windowrule = suppressevent maximize, class:.*
-windowrule = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
+# CORRECTION ICI : Passage en windowrulev2 et suppression de suppressevent
+windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
 
 windowrulev2 = float,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
 windowrulev2 = size 1200 800,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
