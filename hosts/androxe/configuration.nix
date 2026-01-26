@@ -1,7 +1,5 @@
 { config, pkgs, ... }:
 
-
-
 {
   imports = [
     ./hardware-configuration.nix
@@ -40,13 +38,25 @@
   ## DISPLAY MANAGER + WAYLAND
   ########################################
 
-  services.xserver.enable = false;
+  services.displayManager.sddm.enable = false;
 
-  services.displayManager.sddm = {
+  services.xserver = {
     enable = true;
-    wayland.enable = true;
-    theme = "catppuccin-mocha";
-    package = pkgs.kdePackages.sddm; 
+    
+  
+    xkb.layout = "fr";
+    xkb.variant = "";
+
+    displayManager.lightdm = {
+      enable = true;
+      
+      background = ../../wallpaper/wallpaper.jpg;
+
+      greeters.slick = {
+        enable = true;
+        theme.name = "Adwaita-dark";
+      };
+    };
   };
 
   services.displayManager.defaultSession = "hyprland";
@@ -67,8 +77,10 @@
   };
 
   ########################################
-  ## INPUT
+  ## INPUT (Touchpad & Souris)
   ########################################
+
+  services.libinput.enable = true;
 
   services.seatd.enable = true;
 
@@ -143,16 +155,7 @@
     git
     polkit_gnome
     firefox
-  
-
-  (catppuccin-sddm.override {
-      flavor = "mocha";
-      font  = "JetBrainsMono Nerd Font";
-      loginBackground = true;
-    })
-
   ];
-
 
   programs.firefox.enable = true;
 
@@ -191,7 +194,6 @@
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
   ];
-
 
   ########################################
   ## Driver Nvidia

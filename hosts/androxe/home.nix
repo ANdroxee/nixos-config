@@ -23,7 +23,6 @@
     TERMINAL = "kitty";
   };
   
-  # Ranger configuration
   programs.ranger = {
     enable = true;
     settings = {
@@ -34,7 +33,6 @@
     };
   };
   
-  # Activer fontconfig pour les Nerd Fonts
   fonts.fontconfig.enable = true;
   
   home.packages = [
@@ -66,6 +64,7 @@
     pkgs.cliphist
     pkgs.hyprpicker
     pkgs.gnupg
+    pkgs.hyprpaper
   ];
   
   home.file = {};
@@ -100,6 +99,10 @@
     portalPackage = null;
     settings = {
       "$mod" = "SUPER";
+
+      "exec-once" = [ 
+        "systemctl --user start hyprpaper.service || true" 
+      ];
     };
   };
 }

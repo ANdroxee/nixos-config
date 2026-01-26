@@ -5,7 +5,6 @@
 
   xdg.configFile."cava/config".text = ''
     [color]
-    # On utilise un dégradé qui matche ton thème
     gradient = 1
     gradient_count = 6
     gradient_color_1 = '#9ccfd8'

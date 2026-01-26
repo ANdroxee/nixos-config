@@ -44,7 +44,6 @@ monitor=,preferred,auto,1
 ### WINDOWS AND WORKSPACES ###
 ##############################
 
-# CORRECTION ICI : Passage en windowrulev2 et suppression de suppressevent
 windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
 
 windowrulev2 = float,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$

@@ -23,7 +23,6 @@
         
         modules-left = [ "custom/launcher" "hyprland/workspaces" "cpu" "memory" ];
         modules-center = [ "clock" ];
-        # AJOUT DU BLUETOOTH ICI (entre pulseaudio et network)
         modules-right = [ "tray" "pulseaudio" "bluetooth" "network" "battery" "custom/power" ];
 
         # --- MODULES ---
@@ -73,7 +72,6 @@
           on-click = "pavucontrol";
         };
 
-        # CONFIGURATION BLUETOOTH
         "bluetooth" = {
           format = " {status}";
           format-connected = " {device_alias}";
@@ -110,7 +108,6 @@
       }];
 
       style = ''
-        /* PALETTE CATPPUCCIN MOCHA */
         @define-color base   #1e1e2e;
         @define-color mantle #181825;
         @define-color crust  #11111b;
@@ -155,7 +152,7 @@
         #memory,
         #clock,
         #pulseaudio,
-        #bluetooth,   /* AJOUT DU BLUETOOTH DANS LA LISTE CSS */
+        #bluetooth,   
         #network,
         #battery,
         #custom-power,

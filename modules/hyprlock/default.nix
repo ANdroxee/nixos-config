@@ -1,76 +1,110 @@
 { config, pkgs, ... }:
 
+let
+  text_color = "rgba(242, 243, 244, 0.75)";
+  
+  wall = ./../../wallpaper/wallpaper.jpg;
+  profile = ./../../wallpaper/Profil_image.png; 
+in
 {
   programs.hyprlock = {
     enable = true;
     
     settings = {
+      # GENERAL
       general = {
+        no_fade_in = true;
+        no_fade_out = true;
+        hide_cursor = false;
+        grace = 0;
         disable_loading_bar = true;
-        hide_cursor = true;
-        no_fade_in = false; 
       };
 
+      # BACKGROUND
       background = [
         {
           monitor = "";
-          # Essaie d'abord avec un chemin sûr dans ton home pour tester
-          # path = "/home/ton_user/wallpaper.jpg"; 
-          path = "/etc/nixos/wallpaper/wallpaper.jpg"; 
-          
-          # COULEUR DE SECOURS : Si l'image foire, tu auras du gris foncé au lieu du noir complet
-          color = "rgba(25, 20, 20, 1.0)";
-
-          # CORRECTION ICI : Doit être un entier (1, 2, 3...) pas 0.5
-          blur_passes = 2; 
-          blur_size = 7;
+          path = "${wall}";
+          blur_passes = 2;
+          contrast = 1;
+          brightness = 0.5;
+          vibrancy = 0.2;
+          vibrancy_darkness = 0.2;
         }
       ];
 
-      label = [
-        # TIME
-        {
-          monitor = "";
-          text = ''cmd[update:1000] echo "$(date +"%H:%M")"''; # Simplifié pour test
-          font_size = 90;
-          font_family = "JetBrains Mono Regular";
-          position = "0, 200";
-          halign = "center";
-          valign = "center";
-          color = "rgba(200, 200, 200, 1.0)"; # Ajout explicite de couleur
-        }
-        # DATE
-        {
-          monitor = "";
-          text = ''cmd[update:43200000] echo "$(date +"%A, %d %B %Y")"'';
-          font_size = 25;
-          font_family = "JetBrains Mono Regular";
-          position = "0, 130";
-          halign = "center";
-          valign = "center";
-          color = "rgba(200, 200, 200, 1.0)";
-        }
-      ];
-  
       input-field = [
         {
           monitor = "";
-          size = "400, 60";
-          outline_thickness = 3;
-          dots_size = 0.33; # Ajusté
-          dots_spacing = 0.15;
+          size = "250, 60";
+          outline_thickness = 2;
+          dots_size = 0.2;
+          dots_spacing = 0.35;
           dots_center = true;
+          
+          outer_color = "rgba(0, 0, 0, 0)";
+          inner_color = "rgba(0, 0, 0, 0.2)";
+          font_color = "${text_color}";
+          
           fade_on_empty = false;
-          placeholder_text = ''<i>󰌾 Logged in as $USER</i>'';
+          rounding = -1;
+          
+          check_color = "rgb(204, 136, 34)";
+          placeholder_text = "<i><span foreground=\"##cdd6f4\">Input Password...</span></i>";
+          
           hide_input = false;
           position = "0, -200";
           halign = "center";
           valign = "center";
-          
-          # Assurons-nous que les couleurs sont visibles
-          outer_color = "rgb(151515)";
-          inner_color = "rgb(200, 200, 200)";
-          font_color = "rgb(10, 10, 10)";
+        }
+      ];
+
+      # TIME
+      label = [
+        {
+          monitor = "";
+          text = ''cmd[update:1000] echo "$(date +"%-I:%M")"'';
+          color = "${text_color}";
+          font_size = 95;
+          font_family = "JetBrains Mono Extrabold";
+          position = "0, 200";
+          halign = "center";
+          valign = "center";
+        }
+        # DATE
+        {
+          monitor = "";
+          text = ''cmd[update:1000] echo "$(date +"%A, %B %d")"'';
+          color = "${text_color}";
+          font_size = 22;
+          font_family = "JetBrains Mono";
+          position = "0, 300";
+          halign = "center";
+          valign = "center";
+        }
+        {
+          monitor = "";
+          text = "Hi $USER";
+          color = "${text_color}";
+          font_size = 14;
+          font_family = "JetBrains Mono";
+          position = "0, -10";
+          halign = "center";
+          valign = "top";
+        }
+      ];
+
+      # PROFILE PICTURE
+      image = [
+        {
+          monitor = "";
+          path = "${profile}";
+          size = 100;
+          border_size = 2;
+          border_color = "${text_color}";
+          position = "0, -100";
+          halign = "center";
+          valign = "center";
         }
       ];
     };
