@@ -166,8 +166,7 @@
     open = false;
     nvidiaSettings = true;
     modesetting.enable = true;
-    # Pas de section "prime" ici pour un PC fixe standard !
-    # Sauf si tu branches ton écran sur la carte mère (ce qu'il ne faut pas faire)
+   
   };
 
   system.stateVersion = "25.05";

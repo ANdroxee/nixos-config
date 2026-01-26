@@ -1,3 +1,18 @@
+{ config, pkgs, osConfig, ... }:
+
+let
+  hostname = osConfig.networking.hostName;
+  # Le wallpaper est copié dans ~/.config/wallpaper.jpg par le module hyprpaper
+  wallpaperPath = "$HOME/.config/wallpaper.jpg";
+  
+  # Pour arasaka, utiliser swaybg (plus compatible avec NVIDIA)
+  # Pour androxe, utiliser hyprpaper service
+  wallpaperCmd = if hostname == "arasaka" then
+    "pkill swaybg; swaybg -m fill -i ${wallpaperPath}"
+  else
+    "systemctl --user start hyprpaper.service || true";
+in
+
 ''
 #################
 ### AUTOSTART ###
@@ -6,6 +21,8 @@
 # Autostart necessary processes (like notifications daemons, status bars, etc.)
 # Or execute your favorite apps at launch like this:
 
+ exec-once = ${wallpaperCmd}
+ exec-once = systemctl --user start waybar.service || waybar
  exec-once = wl-paste --type text --watch cliphist store 
  exec-once = wl-paste --type image --watch cliphist store
 

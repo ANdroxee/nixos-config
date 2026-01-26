@@ -6,7 +6,7 @@ let
   
   keybindings = import ./config/keybindings.nix;
   animations = import ./config/animations.nix;
-  autostart = import ./config/autostart.nix;
+  autostart = import ./config/autostart.nix { inherit config pkgs osConfig; };
 in {
   options.hyprland = {
     isDualMonitor = lib.mkOption {
