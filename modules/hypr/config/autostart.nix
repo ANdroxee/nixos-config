@@ -6,6 +6,8 @@
 # Autostart necessary processes (like notifications daemons, status bars, etc.)
 # Or execute your favorite apps at launch like this:
 
+ exec-once = waybar
+ exec-once = swaybg -o eDP-1 -i /etc/nixos/modules/hyprpaper/wallpaper/wallpaper.jpg -m fill
  exec-once = wl-paste --type text --watch cliphist store 
  exec-once = wl-paste --type image --watch cliphist store
 
