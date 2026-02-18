@@ -1,3 +1,16 @@
+{ config, pkgs, osConfig, ... }:
+
+let
+  hostname = osConfig.networking.hostName;
+ 
+  wallpaperPath = "$HOME/.config/wallpaper.jpg";
+  
+  wallpaperCmd = if hostname == "arasaka" then
+    "pkill swaybg; swaybg -m fill -i ${wallpaperPath}"
+  else
+    "systemctl --user start hyprpaper.service || true";
+in
+
 ''
 #################
 ### AUTOSTART ###
@@ -6,8 +19,8 @@
 # Autostart necessary processes (like notifications daemons, status bars, etc.)
 # Or execute your favorite apps at launch like this:
 
- exec-once = waybar
- exec-once = swaybg -o eDP-1 -i /etc/nixos/modules/hyprpaper/wallpaper/wallpaper.jpg -m fill
+ exec-once = ${wallpaperCmd}
+ exec-once = systemctl --user start waybar.service || waybar
  exec-once = wl-paste --type text --watch cliphist store 
  exec-once = wl-paste --type image --watch cliphist store
 
