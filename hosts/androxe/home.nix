@@ -64,7 +64,10 @@
     pkgs.cliphist
     pkgs.hyprpicker
     pkgs.gnupg
+    pkgs.prismlauncher
     pkgs.hyprpaper
+    pkgs.swaybg
+    pkgs.python3
   ];
   
   home.file = {};
