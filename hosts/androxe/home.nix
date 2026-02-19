@@ -44,7 +44,7 @@
     pkgs.zsh-autosuggestions
     pkgs.zsh-syntax-highlighting
     pkgs.zsh-powerlevel10k
-    pkgs.gh-copilot
+    pkgs.github-copilot-cli
     pkgs.gh
     pkgs.rofi
     pkgs.psmisc 
@@ -68,6 +68,7 @@
     pkgs.hyprpaper
     pkgs.swaybg
     pkgs.python3
+    pkgs.antigravity
   ];
   
   home.file = {};

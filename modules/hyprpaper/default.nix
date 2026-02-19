@@ -7,6 +7,9 @@ let
   # Pour arasaka (NVIDIA), utiliser swaybg qui est plus compatible
   # Pour androxe (portable), utiliser hyprpaper
   useSwaybg = hostname == "arasaka";
+  
+  # Define stable path for config use
+  wallpaperMirror = "/home/androxe/.config/wallpaper.jpg";
 in
 
 {
@@ -20,8 +23,8 @@ in
     settings = {
       ipc = "on";
       splash = false;
-      preload = [ wallpaperPath ];
-      wallpaper = [ "eDP-1,${wallpaperPath}" ];
+      preload = [ wallpaperMirror ];
+      wallpaper = [ "eDP-1,${wallpaperMirror}" ];
     };
   };
 

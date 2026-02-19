@@ -150,7 +150,7 @@
     zsh-autosuggestions
     zsh-syntax-highlighting
     zsh-powerlevel10k
-    gh-copilot
+    github-copilot-cli
     gh
     discord
     code-cursor
