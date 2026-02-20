@@ -25,12 +25,12 @@ workspace = 7, monitor:desc:Philips Consumer Electronics Company Philips 220V4 U
 ### WINDOWS AND WORKSPACES ###
 ##############################
 
-# CORRECTION ICI : Passage en windowrulev2 et suppression de suppressevent
-windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
+# Nouvelle syntaxe windowrule (windowrulev2 est déprécié depuis Hyprland 0.48+)
+windowrule = match:class ^$ match:title ^$ match:xwayland on match:floating on match:fullscreen off match:pinned off, no_focus on
 
-windowrulev2 = float,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
-windowrulev2 = size 1200 800,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
-windowrulev2 = center,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
+windowrule = match:class ^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$, float on
+windowrule = match:class ^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$, size 1200 800
+windowrule = match:class ^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$, center on
 
 '' else ''
 ################
@@ -44,9 +44,9 @@ monitor=,preferred,auto,1
 ### WINDOWS AND WORKSPACES ###
 ##############################
 
-windowrulev2 = nofocus,class:^$,title:^$,xwayland:1,floating:1,fullscreen:0,pinned:0
+windowrule = match:class ^$ match:title ^$ match:xwayland on match:floating on match:fullscreen off match:pinned off, no_focus on
 
-windowrulev2 = float,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
-windowrulev2 = size 1200 800,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
-windowrulev2 = center,class:^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$
+windowrule = match:class ^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$, float on
+windowrule = match:class ^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$, size 1200 800
+windowrule = match:class ^(org.pulseaudio.pavucontrol|blueman-manager|nm-connection-editor)$, center on
 ''
