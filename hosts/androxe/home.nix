@@ -69,6 +69,7 @@
     pkgs.swaybg
     pkgs.python3
     pkgs.antigravity
+    pkgs.gimp
   ];
   
   home.file = {};

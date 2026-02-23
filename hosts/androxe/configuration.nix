@@ -81,20 +81,12 @@
   ########################################
 
   services.libinput.enable = true;
-
   services.seatd.enable = true;
-
-  environment.sessionVariables = {
-    TERMINAL = "kitty";
-    WLR_NO_HARDWARE_CURSORS = "1";
-  };
-
   ########################################
-  ## AUDIO
+  ## AUDIO & SERVICES
   ########################################
 
   services.pulseaudio.enable = false;
-
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -102,13 +94,8 @@
     pulse.enable = true;
   };
 
-  ########################################
-  ## POLKIT + DBUS
-  ########################################
-
   security.rtkit.enable = true;
   security.polkit.enable = true;
-
   services.dbus.enable = true;
 
   systemd.user.services.polkit-gnome-authentication-agent-1 = {
@@ -122,7 +109,17 @@
     };
   };
 
-    services.flatpak.enable = true;
+  ########################################
+  ## FLATPAK & DOCKER
+  ########################################
+
+  services.flatpak.enable = true;
+
+  virtualisation.docker.enable = true;
+
+  virtualisation.docker.daemon.settings = {
+    insecure-registries = [ "registry.local" ];
+  };
 
   ########################################
   ## USER
@@ -132,10 +129,15 @@
     isNormalUser = true;
     description = "androxe";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" "input" "video" ];
+    extraGroups = [ "networkmanager" "docker" "wheel" "input" "video" ];
   };
 
   programs.zsh.enable = true;
+
+  environment.sessionVariables = {
+    TERMINAL = "kitty";
+    WLR_NO_HARDWARE_CURSORS = "1";
+  };
 
   ########################################
   ## PACKAGES

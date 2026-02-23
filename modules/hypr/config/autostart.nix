@@ -8,7 +8,7 @@ let
   wallpaperCmd = if hostname == "arasaka" then
     "pkill swaybg; swaybg -m fill -i ${wallpaperPath}"
   else
-    "systemctl --user start hyprpaper.service || true";
+    "systemctl --user start hyprpaper.service && sleep 0.5 && hyprctl hyprpaper wallpaper \"eDP-1,${wallpaperPath}\" || true";
 in
 
 ''

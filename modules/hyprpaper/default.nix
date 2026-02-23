@@ -24,7 +24,12 @@ in
       ipc = "on";
       splash = false;
       preload = [ wallpaperMirror ];
-      wallpaper = [ "eDP-1,${wallpaperMirror}" ];
+      wallpaper = [
+        {
+          monitor = "eDP-1";
+          path = wallpaperMirror;
+        }
+      ];
     };
   };
 
