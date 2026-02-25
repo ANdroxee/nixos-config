@@ -70,6 +70,7 @@
     pkgs.python3
     pkgs.antigravity
     pkgs.gimp
+    pkgs.asciiquarium
   ];
   
   home.file = {};
