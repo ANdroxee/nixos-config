@@ -17,6 +17,15 @@
   networking.hostName = "arasaka"; # <--- Le nom de la Corpo !
   networking.networkmanager.enable = true;
 
+  ########################################
+  ## FIREWALL
+  ########################################
+
+  networking.firewall = {
+    enable = true;
+    
+  };
+
   time.timeZone = "Europe/Paris";
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {

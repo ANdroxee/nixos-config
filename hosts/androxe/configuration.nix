@@ -19,6 +19,14 @@
   networking.hostName = "androxe";
   networking.networkmanager.enable = true;
 
+  ########################################
+  ## FIREWALL
+  ########################################
+
+  networking.firewall = {
+    enable = true;
+  };
+
   time.timeZone = "Europe/Paris";
 
   i18n.defaultLocale = "en_US.UTF-8";
