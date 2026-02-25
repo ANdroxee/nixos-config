@@ -159,6 +159,7 @@
     git
     polkit_gnome
     firefox
+    pavucontrol
   ];
 
   programs.firefox.enable = true;

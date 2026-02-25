@@ -71,6 +71,8 @@
     pkgs.antigravity
     pkgs.gimp
     pkgs.asciiquarium
+    pkgs.cava
+    pkgs.peaclock
   ];
   
   home.file = {};
