@@ -73,6 +73,7 @@
     pkgs.asciiquarium
     pkgs.cava
     pkgs.peaclock
+    pkgs.go
   ];
   
   home.file = {};
