@@ -20,6 +20,20 @@
   networking.networkmanager.enable = true;
 
   ########################################
+  ## VIRTUALIZATION
+  ########################################
+
+  virtualisation.vmware.host.enable = true;
+  virtualisation.vmware.guest.enable = true;
+  virtualisation.libvirtd.enable = true;
+  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
+  virtualisation.docker.enable = true;
+  virtualisation.docker.daemon.settings = {
+    insecure-registries = [ "registry.local" ];
+  };
+
+  ########################################
   ## FIREWALL
   ########################################
 
@@ -118,16 +132,10 @@
   };
 
   ########################################
-  ## FLATPAK & DOCKER
+  ## FLATPAK
   ########################################
 
   services.flatpak.enable = true;
-
-  virtualisation.docker.enable = true;
-
-  virtualisation.docker.daemon.settings = {
-    insecure-registries = [ "registry.local" ];
-  };
 
   ########################################
   ## USER
@@ -168,6 +176,7 @@
     polkit_gnome
     firefox
     pavucontrol
+    opencode
   ];
 
   programs.firefox.enable = true;
