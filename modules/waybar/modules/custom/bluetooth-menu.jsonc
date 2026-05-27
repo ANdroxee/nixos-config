@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Devices",
+    "id": "devices",
+    "cmd": "~/.config/waybar/scripts/bluetooth"
+    }
+  },
+  {
+    "name": "Disable Bluetooth",
+    "id": "disable",
+    "cmd": "bluetoothctl power off && notify-send 'Bluetooth Off' -i 'network-bluetooth-inactive'"
+  }
+]

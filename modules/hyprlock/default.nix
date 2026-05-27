@@ -1,112 +1,16 @@
 { config, pkgs, ... }:
 
-let
-  text_color = "rgba(242, 243, 244, 0.75)";
-  
-  wall = ./../../wallpaper/wallpaper.jpg;
-  profile = ./../../wallpaper/Profil_image.png; 
-in
 {
-  programs.hyprlock = {
-    enable = true;
-    
-    settings = {
-      # GENERAL
-      general = {
-        no_fade_in = true;
-        no_fade_out = true;
-        hide_cursor = false;
-        grace = 0;
-        disable_loading_bar = true;
-      };
+  # Activation de hyprlock
+  programs.hyprlock.enable = true;
 
-      # BACKGROUND
-      background = [
-        {
-          monitor = "";
-          path = "${wall}";
-          blur_passes = 2;
-          contrast = 1;
-          brightness = 0.5;
-          vibrancy = 0.2;
-          vibrancy_darkness = 0.2;
-        }
-      ];
-
-      input-field = [
-        {
-          monitor = "";
-          size = "250, 60";
-          outline_thickness = 2;
-          dots_size = 0.2;
-          dots_spacing = 0.35;
-          dots_center = true;
-          
-          outer_color = "rgba(0, 0, 0, 0)";
-          inner_color = "rgba(0, 0, 0, 0.2)";
-          font_color = "${text_color}";
-          
-          fade_on_empty = false;
-          rounding = -1;
-          
-          check_color = "rgb(204, 136, 34)";
-          placeholder_text = "<i><span foreground=\"##cdd6f4\">Input Password...</span></i>";
-          
-          hide_input = false;
-          position = "0, -200";
-          halign = "center";
-          valign = "center";
-        }
-      ];
-
-      # TIME
-      label = [
-        {
-          monitor = "";
-          text = ''cmd[update:1000] echo "$(date +"%-I:%M")"'';
-          color = "${text_color}";
-          font_size = 95;
-          font_family = "JetBrains Mono Extrabold";
-          position = "0, 200";
-          halign = "center";
-          valign = "center";
-        }
-        # DATE
-        {
-          monitor = "";
-          text = ''cmd[update:1000] echo "$(date +"%A, %B %d")"'';
-          color = "${text_color}";
-          font_size = 22;
-          font_family = "JetBrains Mono";
-          position = "0, 300";
-          halign = "center";
-          valign = "center";
-        }
-        {
-          monitor = "";
-          text = "Hi $USER";
-          color = "${text_color}";
-          font_size = 14;
-          font_family = "JetBrains Mono";
-          position = "0, -10";
-          halign = "center";
-          valign = "top";
-        }
-      ];
-
-      # PROFILE PICTURE
-      image = [
-        {
-          monitor = "";
-          path = "${profile}";
-          size = 100;
-          border_size = 2;
-          border_color = "${text_color}";
-          position = "0, -100";
-          halign = "center";
-          valign = "center";
-        }
-      ];
-    };
-  };
+  # Dépendances pour les widgets (Météo, Musique, Batterie)
+  # (Vous pouvez garder ces paquets s'ils vous sont utiles pour autre chose, 
+  # sinon vous pouvez aussi supprimer ce bloc si vous n'en avez plus besoin).
+  home.packages = with pkgs; [
+    playerctl
+    upower
+    jq
+    curl
+  ];
 }

@@ -1,0 +1,13 @@
+[
+  {
+    "name": "Networks",
+    "id": "networks",
+    "cmd": "~/.config/waybar/scripts/network"
+    }
+  },
+  {
+    "name": "Disable Wi-Fi",
+    "id": "disable",
+    "cmd": "nmcli radio wifi off && notify-send 'Wi-Fi Disabled' -i 'network-wireless-off'"
+  }
+]

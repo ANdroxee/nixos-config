@@ -1,0 +1,7 @@
+[
+  {
+    "name": "Power Menu",
+    "id": "power",
+    "cmd": "~/.config/waybar/scripts/power"
+  }
+]

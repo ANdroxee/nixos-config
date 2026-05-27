@@ -69,11 +69,11 @@
     pkgs.swaybg
     pkgs.python3
     pkgs.antigravity
-    pkgs.gimp
     pkgs.asciiquarium
     pkgs.cava
     pkgs.peaclock
     pkgs.go
+    pkgs.pipx
   ];
   
   home.file = {};
@@ -101,6 +101,8 @@
   
   hyprland.isDualMonitor = true;
   waybar.isLaptop = true;
+  waybar.enableMechabar = true;
+  waybar.mechabarTheme = "mocha";
   
   wayland.windowManager.hyprland = {
     enable = true;

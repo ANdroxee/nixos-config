@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+#
+# Update NixOS and check for updates
+# Passing "module" returns the update status in JSON format
+#
+# Requires nix (with flakes or nix-channel)
+#
+# Author:  Jesse Mirabel <sejjymvm@gmail.com>
+# License: MIT
+
+FG_GREEN="\e[32m"
+FG_BLUE="\e[34m"
+FG_RESET="\e[39m"
+
+TIMEOUT=30
+
+printf() {
+	command printf "$@" >&2
+}
+
+check_updates() {
+	local output status
+
+	if [[ -d ~/.config/nixd ]]; then
+		output=$(nixd-update 2>/dev/null || echo "")
+		UPDATES=$(wc -l <<< "$output" | tr -d ' ')
+		return 0
+	fi
+
+	output=$(timeout $TIMEOUT nix-env -u --dry-run 2>&1)
+	status=$?
+
+	if ((status != 0)); then
+		FAILED=true
+		return 1
+	fi
+
+	UPDATES=$(grep -c "^" <<< "$output" 2>/dev/null || echo "0")
+}
+
+display_module() {
+	local icon tooltip
+
+	if $FAILED; then
+		icon='󰒑'
+		tooltip="<b>Failed to fetch updates</b>\nRight-click to retry"
+	elif ((UPDATES == 0)); then
+		icon='󰸟'
+		tooltip="No updates available"
+	else
+		icon='󰄠'
+		tooltip="<b>Updates available</b>: $UPDATES"
+	fi
+
+	cat <<- EOF
+		{ "text": "$icon", "tooltip": "$tooltip" }
+	EOF
+}
+
+update_packages() {
+	printf "%bUpdating NixOS...%b\n" "$FG_BLUE" "$FG_RESET"
+
+	if [[ -d ~/.config/nixd ]]; then
+		nixd-update
+	else
+		sudo systemctl reboot
+	fi
+
+	notify-send "Update Complete" -i "package-install"
+
+	printf "%bUpdate complete!%b\n" "$FG_GREEN" "$FG_RESET"
+}
+
+main() {
+	FAILED=false
+	UPDATES=0
+
+	case $1 in
+		module)
+			check_updates
+			display_module
+			;;
+		*)
+			printf "%bChecking for updates...%b\n" "$FG_BLUE" "$FG_RESET"
+
+			check_updates
+			update_packages
+			;;
+	esac
+}
+
+main "$@"

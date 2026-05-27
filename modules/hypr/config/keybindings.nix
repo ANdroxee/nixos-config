@@ -11,8 +11,10 @@ $menu = rofi -show drun
 
 # --- CAPTURE D'ÉCRAN (Sans touche Impr.Ecran) ---
 
-bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" - | wl-copy
-bind = $mainMod CTRL, S, exec, grim "$HOME/Pictures/Capture_$(date +%Y%m%d_%H%M%S).png"
+# Hyprland exec n'utilise pas de shell : sh -c pour que $(slurp) et $(date) fonctionnent
+bind = $mainMod SHIFT, S, exec, sh -c, grim -g "$(slurp)" - | wl-copy
+bind = $mainMod CTRL, S, exec, sh -c, grim "$HOME/Pictures/Capture_$(date +%Y%m%d_%H%M%S).png"
+bind = $mainMod ALT, S, exec, sh -c, grim -g "$(slurp)" "$HOME/Pictures/Capture_$(date +%Y%m%d_%H%M%S).png"
 
 
 # --- Applications ---
@@ -66,7 +68,7 @@ bind = $mainMod SHIFT, code:19, movetoworkspace, 10
 # --- Special Workspace (Magic) ---
 # Ouvrir/Fermer le special workspace
 bind = $mainMod, S, togglespecialworkspace, magic
-bind = $mainMod ALT, S, movetoworkspace, special:magic
+bind = $mainMod CTRL ALT, S, movetoworkspace, special:magic
 
 # --- Souris ---
 bind = $mainMod, mouse_down, workspace, e+1
