@@ -3,12 +3,12 @@
   home.username = "androxe";
   home.homeDirectory = "/home/androxe";
   home.stateVersion = "25.05";
-  
+
   gtk.enable = true;
   gtk.gtk3.theme = {
     name = "Adwaita-dark";
   };
-  
+
   programs.git = {
     enable = true;
     settings = {
@@ -18,11 +18,15 @@
       };
     };
   };
-  
+
   home.sessionVariables = {
     TERMINAL = "kitty";
   };
-  
+
+  home.sessionPath = [
+    "$HOME/.local/bin"
+  ];
+
   programs.ranger = {
     enable = true;
     settings = {
@@ -32,9 +36,9 @@
       confirm_on_delete = "multiple";
     };
   };
-  
+
   fonts.fontconfig.enable = true;
-  
+
   home.packages = [
     pkgs.hello
     pkgs.hyprland
@@ -47,7 +51,7 @@
     pkgs.github-copilot-cli
     pkgs.gh
     pkgs.rofi
-    pkgs.psmisc 
+    pkgs.psmisc
     pkgs.ranger
     pkgs.file
     pkgs.imagemagick
@@ -58,8 +62,8 @@
     pkgs.unzip
     pkgs.p7zip
     pkgs.brightnessctl
-    pkgs.grim        
-    pkgs.slurp        
+    pkgs.grim
+    pkgs.slurp
     pkgs.wl-clipboard
     pkgs.cliphist
     pkgs.hyprpicker
@@ -75,11 +79,11 @@
     pkgs.go
     pkgs.pipx
   ];
-  
+
   home.file = {};
-  
+
   programs.home-manager.enable = true;
-  
+
   imports = [
     ../../modules/waybar/default.nix
     ../../modules/hypr/default.nix
@@ -98,21 +102,20 @@
     ../../modules/yazi/default.nix
     ../../modules/lazygit/default.nix
   ];
-  
+
   hyprland.isDualMonitor = true;
   waybar.isLaptop = true;
   waybar.enableMechabar = true;
   waybar.mechabarTheme = "mocha";
-  
+
   wayland.windowManager.hyprland = {
     enable = true;
     package = null;
     portalPackage = null;
     settings = {
       "$mod" = "SUPER";
-
-      "exec-once" = [ 
-        "systemctl --user start hyprpaper.service || true" 
+      "exec-once" = [
+        "systemctl --user start hyprpaper.service || true"
       ];
     };
   };

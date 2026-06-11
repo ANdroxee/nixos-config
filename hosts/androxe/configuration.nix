@@ -64,14 +64,13 @@
 
   services.xserver = {
     enable = true;
-    
-  
+
     xkb.layout = "fr";
     xkb.variant = "";
 
     displayManager.lightdm = {
       enable = true;
-      
+
       background = ../../wallpaper/wallpaper.jpg;
 
       greeters.slick = {
@@ -104,6 +103,7 @@
 
   services.libinput.enable = true;
   services.seatd.enable = true;
+
   ########################################
   ## AUDIO & SERVICES
   ########################################
@@ -156,11 +156,25 @@
   };
 
   ########################################
+  ## NIX-LD
+  ########################################
+
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+      openssl
+      curl
+      zlib
+    ];
+  };
+
+  ########################################
   ## PACKAGES
   ########################################
 
   environment.systemPackages = with pkgs; [
-    vim 
+    vim
     wget
     kitty
     wofi
@@ -180,6 +194,7 @@
   ];
 
   programs.firefox.enable = true;
+  services.teamviewer.enable = true;
 
   ########################################
   ## BLUETOOTH
